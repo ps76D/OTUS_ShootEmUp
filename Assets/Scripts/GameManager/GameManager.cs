@@ -20,7 +20,7 @@ namespace GameManager
         private void OnEnable()
         {
             CharacterController.OnCharacterDeath += this.FinishGame;
-            UI.LoseScreen.OnRestartButtonClicked += this.Revive;
+            UI.LoseScreen.OnReviveButtonClicked += this.Revive;
         }
 
         private void Revive()
@@ -30,7 +30,7 @@ namespace GameManager
             
             this.EnablePlayerInput(true);
 
-            this.StopTime(false);
+            TimeManager.StopTime(false);
         }
 
         private void FinishGame()
@@ -39,17 +39,12 @@ namespace GameManager
             
             this.EnablePlayerInput(false);
             
-            this.StopTime(true);
+            TimeManager.StopTime(true);
         }
 
         private void EnablePlayerInput(bool value)
         {
             this._inputManager.gameObject.SetActive(value);
-        }
-
-        private void StopTime(bool value)
-        {
-            Time.timeScale = value ? 0 : 1;
         }
     }
 }
