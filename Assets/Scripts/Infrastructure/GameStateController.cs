@@ -8,10 +8,8 @@ namespace Infrastructure
 {
     public class GameStateController : MonoBehaviour
     {
+        [Inject]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
-        
-        /*[Inject]
-        [SerializeField] private  IEnumerable<GameBootstrapper> _gameBootstrappers;*/
         
         [InjectIEnumerable]
         private IEnumerable<IGameStateListener> _gameStateListeners;
@@ -20,25 +18,13 @@ namespace Infrastructure
 
         private void Awake()
         {
+            DontDestroyOnLoad(this);
+                
             _gameBootstrapper = FindObjectOfType<GameBootstrapper>();
-            
-            /*_gameStateMachine = _gameBootstrapper.Game.StateMachine;*/
         }
-
-        /*public GameStateController()
-        {
-            _gameStateMachine = _gameBootstrapper.Game.StateMachine;
-        }*/
         
         private void OnEnable()
         {
-            /*foreach (var listener in _gameBootstrappers)
-            {
-                _gameBootstrapper = listener;
-            }*/
-
-            /*_gameStateMachine = GetComponent<GameBootstrapper>().Game.StateMachine;*/
-            
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += PauseGame;
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += FinishGame;
             _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += StartGame;

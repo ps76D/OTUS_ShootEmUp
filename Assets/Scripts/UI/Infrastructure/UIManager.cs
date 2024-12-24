@@ -23,28 +23,19 @@ namespace UI.Infrastructure
         private Action _loseScreenShowHandler;
         private Action _pauseScreenShowHandler;
 
-        /*public UIManager()
-        {
-            _mainMenuShowHandler = () => ShowScreen(_mainMenuScreen);
-            _hudShowHandler = () => ShowScreen(_hud);
-            _hudHideHandler = () => CloseScreen(_hud);
-            _loseScreenShowHandler = () => ShowScreen(_loseScreen);
-            _pauseScreenShowHandler = () => ShowScreen(_pauseScreen);
-        }*/
-
         private void Awake()
         {
             DontDestroyOnLoad(this);
-            
+        }
+
+        private void Start()
+        {
             _mainMenuShowHandler = () => ShowScreen(_mainMenuScreen);
             _hudShowHandler = () => ShowScreen(_hud);
             _hudHideHandler = () => CloseScreen(_hud);
             _loseScreenShowHandler = () => ShowScreen(_loseScreen);
             _pauseScreenShowHandler = () => ShowScreen(_pauseScreen);
-        }
-
-        private void OnEnable()
-        {
+            
             _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu += _mainMenuShowHandler;
             
             _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu += _hudHideHandler;
@@ -52,7 +43,6 @@ namespace UI.Infrastructure
             
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += _loseScreenShowHandler;
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += _pauseScreenShowHandler;
-            
         }
         
         private void OnDisable()
@@ -76,16 +66,5 @@ namespace UI.Infrastructure
             EventSystem.current.SetSelectedGameObject(null);
             screen.gameObject.SetActive(false);
         }
-        
-        /*public void ExitGame(UIScreen screen)
-        {
-            CloseScreen(screen);
-            ShowMainMenuScreen();
-        }
-        
-        private void ShowMainMenuScreen()
-        {
-            ShowScreen(_mainMenuScreen);
-        }*/
     }
 }

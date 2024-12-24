@@ -183,7 +183,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8221915513386204836}
   - component: {fileID: 728708951584642069}
-  - component: {fileID: -5520929081391967631}
   m_Layer: 0
   m_Name: '[UIManager]'
   m_TagString: Untagged
@@ -225,20 +224,6 @@ MonoBehaviour:
   _loseScreen: {fileID: 5574258511809401005}
   _pauseScreen: {fileID: 2864563584681649621}
   _hud: {fileID: 123961457270782380}
---- !u!114 &-5520929081391967631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7673458625617947965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74b1696281884073b2e5be30355f3bf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _uiManager: {fileID: 0}
-  _gameBootstrapper: {fileID: 0}
 --- !u!1001 &341288840253237364
 PrefabInstance:
   m_ObjectHideFlags: 0

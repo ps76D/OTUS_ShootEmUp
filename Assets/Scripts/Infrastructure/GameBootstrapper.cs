@@ -6,8 +6,6 @@ namespace Infrastructure
 {
   public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
   {
-    [SerializeField] private UIManager _uiManager;
-    
     public Game Game;
 
     private void Awake()
