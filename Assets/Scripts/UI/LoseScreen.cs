@@ -10,7 +10,7 @@ namespace UI
 {
     public sealed class LoseScreen : UIScreen
     {
-        [Inject]
+        [InjectCustom]
         private GameBootstrapper _gameBootstrapper;
         
         [SerializeField] private Button _reviveButton;

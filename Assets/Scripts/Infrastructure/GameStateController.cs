@@ -8,7 +8,7 @@ namespace Infrastructure
 {
     public class GameStateController : MonoBehaviour
     {
-        [Inject]
+        [InjectCustom]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         [InjectIEnumerable]

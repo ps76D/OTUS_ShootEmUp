@@ -7,7 +7,7 @@ namespace UI.Infrastructure
 {
     public abstract class UIScreen : MonoBehaviour, IGameStateListener, IUIScreen
     {
-        [Inject]
+        [InjectCustom]
         [SerializeField] protected UIManager _uiManager;
         
         /*private void Start()
