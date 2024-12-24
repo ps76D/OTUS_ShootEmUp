@@ -12,7 +12,7 @@ namespace Character
         
         private void OnEnable()
         {
-            this._character.OnHitPointsChanged += this.SendStatsToUI;
+            _character.OnHitPointsChanged += SendStatsToUI;
         }
 
         private void SendStatsToUI(HitPointsComponent character)

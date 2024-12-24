@@ -1,9 +1,7 @@
-﻿using Infrastructure.DI;
-
-namespace UI.Interfaces
+﻿namespace Infrastructure.Listeners
 {
     public interface IStartGameListener : IGameStateListener
     {
-        
+        void StartGame();
     }
 }

@@ -1,9 +1,7 @@
-﻿using Infrastructure.DI;
-
-namespace UI.Interfaces
+﻿namespace Infrastructure.Listeners
 {
     public interface IPauseGameListener : IGameStateListener
     {
-        
+        void PauseGame();
     }
 }

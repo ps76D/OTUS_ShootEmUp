@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public sealed class LoseScreen : UIScreen, IFinishGameListener
+    public sealed class LoseScreen : UIScreen
     {
         [Inject]
         private GameBootstrapper _gameBootstrapper;
@@ -25,34 +25,38 @@ namespace UI
         
         public void Start()
         {            
-            this._gameStateMachine = this._gameBootstrapper.Game.StateMachine;
+            _gameStateMachine = _gameBootstrapper.Game.StateMachine;
             
-            this._reviveButton.onClick.AddListener(this.Revive);
-            this._restartButton.onClick.AddListener(this.RestartGame);
-            this._exitButton.onClick.AddListener(this.ExitGame);
+            _reviveButton.onClick.AddListener(Revive);
+            _restartButton.onClick.AddListener(RestartGame);
+            _exitButton.onClick.AddListener(ExitGame);
         }
         
         private void Revive()
         {
+            _gameStateMachine.Enter<GameLoopState>();
+            
             OnReviveButtonClicked?.Invoke();
 
-            UIManager.CloseScreen(this);
+            _uiManager.CloseScreen(this);
         }
         
         private void RestartGame()
         {
+            _gameStateMachine.Enter<RestartState>();
+            
             OnRestartButtonClicked?.Invoke();
 
-            UIManager.CloseScreen(this);
+            _uiManager.CloseScreen(this);
         }
         
         private void ExitGame()
         {
-            this._gameStateMachine.Enter<MainMenuState>();
+            _gameStateMachine.Enter<MainMenuState>();
             
             OnExitButtonClicked?.Invoke();
 
-            UIManager.CloseScreen(this);
+            _uiManager.CloseScreen(this);
         }
     }
 }

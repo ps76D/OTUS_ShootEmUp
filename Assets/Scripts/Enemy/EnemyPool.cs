@@ -25,36 +25,36 @@ namespace Enemy
         {
             for (int i = 0; i < 7; i++)
             {
-                GameObject enemy = Instantiate(this._prefab, this._container);
-                this._enemyPool.Enqueue(enemy);
+                GameObject enemy = Instantiate(_prefab, _container);
+                _enemyPool.Enqueue(enemy);
             }
         }
 
         public GameObject SpawnEnemy()
         {
-            if (!this._enemyPool.TryDequeue(out GameObject enemy))
+            if (!_enemyPool.TryDequeue(out GameObject enemy))
             {
                 return null;
             }
 
-            enemy.transform.SetParent(this._worldTransform);
+            enemy.transform.SetParent(_worldTransform);
 
-            Transform spawnPosition = this._enemyPositionsProvider.RandomSpawnPosition();
+            Transform spawnPosition = _enemyPositionsProvider.RandomSpawnPosition();
             enemy.transform.position = spawnPosition.position;
             
-            Transform attackPosition = this._enemyPositionsProvider.RandomAttackPosition();
+            Transform attackPosition = _enemyPositionsProvider.RandomAttackPosition();
             enemy.GetComponent<EnemyMoveInteractor>().SetDestination(attackPosition.position);
 
-            enemy.GetComponent<EnemyAttackInteractor>().SetTarget(this._character);
-            enemy.GetComponent<EnemyWeapon>().SetTarget(this._character);
+            enemy.GetComponent<EnemyAttackInteractor>().SetTarget(_character);
+            enemy.GetComponent<EnemyWeapon>().SetTarget(_character);
             
             return enemy;
         }
 
         public void SendEnemyToPool(GameObject enemy)
         {
-            enemy.transform.SetParent(this._container);
-            this._enemyPool.Enqueue(enemy);
+            enemy.transform.SetParent(_container);
+            _enemyPool.Enqueue(enemy);
             
             enemy.GetComponent<HitPointsComponent>().ResetHitPoints();
         }

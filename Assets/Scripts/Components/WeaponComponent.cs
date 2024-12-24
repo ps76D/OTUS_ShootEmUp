@@ -9,19 +9,19 @@ namespace Components
         {
             base.OnEnable();
             
-            InputManager.OnPlayerFire += this.Fire;
+            InputManager.OnPlayerFire += Fire;
         }
 
         override protected private void OnDisable()
         { 
             base.OnDisable();
             
-            InputManager.OnPlayerFire -= this.Fire;
+            InputManager.OnPlayerFire -= Fire;
         }
 
         public override Vector2 CalcBulletVelocity()
         {
-            Vector2 velocity = this.GetRotation() * Vector3.up * this.GetBulletConfig()._speed;
+            Vector2 velocity = GetRotation() * Vector3.up * GetBulletConfig()._speed;
             return velocity;
         }
     }

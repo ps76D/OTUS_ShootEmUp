@@ -8,7 +8,7 @@ namespace Infrastructure
 
     public Game(ICoroutineRunner coroutineRunner)
     {
-      this.StateMachine = new GameStateMachine(new SceneLoader(coroutineRunner));
+      StateMachine = new GameStateMachine(new SceneLoader(coroutineRunner));
     }
   }
 }

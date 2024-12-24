@@ -8,11 +8,11 @@ namespace Components
 		
 		public override Vector2 CalcBulletVelocity()
 		{
-			Vector2 startPosition = this.GetPosition();
-			Vector2 vector = (Vector2) this.GetTarget().transform.position - startPosition;
+			Vector2 startPosition = GetPosition();
+			Vector2 vector = (Vector2) GetTarget().transform.position - startPosition;
 			Vector2 direction = vector.normalized;
 			
-			Vector2 velocity = direction * this._velocityMultiplier;
+			Vector2 velocity = direction * _velocityMultiplier;
 			return velocity;
 		}
 	}

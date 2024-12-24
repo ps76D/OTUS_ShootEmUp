@@ -17,53 +17,53 @@ namespace Enemy.Agents
 
         private void Awake()
         {
-            this._enemyMoveInteractor = this.GetComponent<EnemyMoveInteractor>();
-            this._enemyWeapon = this.GetComponent<EnemyWeapon>();
+            _enemyMoveInteractor = GetComponent<EnemyMoveInteractor>();
+            _enemyWeapon = GetComponent<EnemyWeapon>();
         }
 
         public void SetTarget(HitPointsComponent target)
         {
-            this._attackTarget = target;
+            _attackTarget = target;
         }
 
         public void Reset()
         {
-            this._currentTime = this._attackCooldown;
+            _currentTime = _attackCooldown;
         }
 
         private void FixedUpdate()
         {
-            if (!this.CheckEnemyIsOnPosition()) 
+            if (!CheckEnemyIsOnPosition()) 
             {
                 return;
             }
             
-            if (!this.CheckPlayerIsAlive()) 
+            if (!CheckPlayerIsAlive()) 
             {
                 return;  
             }
 
-            this.EnemyFireWithCooldown();
+            EnemyFireWithCooldown();
         }
 
         private bool CheckEnemyIsOnPosition()
         {
-            return this._enemyMoveInteractor.IsReached;
+            return _enemyMoveInteractor.IsReached;
         }
         
         private bool CheckPlayerIsAlive()
         {
-            return this._attackTarget.IsHitPointsExists();
+            return _attackTarget.IsHitPointsExists();
         }
         
         private void EnemyFireWithCooldown()
         {
-            this._currentTime -= Time.fixedDeltaTime;
+            _currentTime -= Time.fixedDeltaTime;
 			
-            if (!(this._currentTime <= 0)) return;
-            this._enemyWeapon.Fire();
+            if (!(_currentTime <= 0)) return;
+            _enemyWeapon.Fire();
 			
-            this._currentTime += this._attackCooldown;
+            _currentTime += _attackCooldown;
         }
     }
 }

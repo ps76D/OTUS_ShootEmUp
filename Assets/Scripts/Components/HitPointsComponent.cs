@@ -14,19 +14,19 @@ namespace Components
 
         private void Awake()
         {
-            this.ResetHitPoints();
+            ResetHitPoints();
         }
 
         public bool IsHitPointsExists() {
-            return this._hitPoints > 0;
+            return _hitPoints > 0;
         }
 
         public void TakeDamage(int damage)
         {
-            this._hitPoints -= damage;
+            _hitPoints -= damage;
             OnHitPointsChanged?.Invoke(this);
             
-            if (this._hitPoints <= 0)
+            if (_hitPoints <= 0)
             {
                 OnHitPointsEmpty?.Invoke(this);
             }
@@ -34,19 +34,19 @@ namespace Components
 
         public void ResetHitPoints()
         {
-            this._hitPoints = this._startHitPoints;
+            _hitPoints = _startHitPoints;
             OnHitPointsChanged?.Invoke(this);
         }
         
         public void Revive()
         {
-            this.ResetHitPoints();
+            ResetHitPoints();
             OnHitPointsChanged?.Invoke(this);
         }
 
         public int GetCurrentHitPointsValue()
         {
-            return this._hitPoints;
+            return _hitPoints;
         }
     }
 }

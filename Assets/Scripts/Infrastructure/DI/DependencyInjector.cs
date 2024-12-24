@@ -16,7 +16,7 @@ namespace Infrastructure.DI
             {
                 FieldInfo property = properties[index];
 
-                if (!property.IsDefined(typeof(InjectAttribute), true)) continue;
+                if (!property.IsDefined(typeof(InjectIEnumerableAttribute), true)) continue;
                 
                 Type propertyType = property.FieldType;
 

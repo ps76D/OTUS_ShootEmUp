@@ -9,30 +9,27 @@ namespace Infrastructure
   {
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
-
-
-    public static event Action OnMainMenu;
     
-    private const string MainMenu = "MainMenu";
-    private const string Game = "Game";
-    
+    public event Action OnMainMenu;
+
     public MainMenuState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
     {
-      this._stateMachine = gameStateMachine;
-      this._sceneLoader = sceneLoader;
+      _stateMachine = gameStateMachine;
+      _sceneLoader = sceneLoader;
     }
 
     public void Exit()
     {
+      _sceneLoader.Load(SceneNamesConsts.Game);
     }
 
     public void Enter()
     {
-      this._sceneLoader.Load(MainMenu);
+      _sceneLoader.Load(SceneNamesConsts.MainMenu);
       
       OnMainMenu?.Invoke();
       
-      TimeManager.StopTime(true);
+      /*TimeManager.StopTime(true);*/
       
       Debug.Log("Enter MainMenuState");
     }

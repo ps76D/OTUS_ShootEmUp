@@ -4,22 +4,19 @@ namespace Infrastructure
 {
   public class BootstrapState : IState
   {
-    private const string Initial = "Initial";
-    private const string UI = "UI";
-    private const string Game = "Game";
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
 
     public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader)
     {
-      this._stateMachine = stateMachine;
-      this._sceneLoader = sceneLoader;
+      _stateMachine = stateMachine;
+      _sceneLoader = sceneLoader;
     }
 
     public void Enter()
     {
       /*this.RegisterServices();*/
-      this._sceneLoader.Load(Initial, onLoaded: this.EnterLoadLevel);
+      _sceneLoader.Load(SceneNamesConsts.Initial, onLoaded: EnterLoadLevel);
       Debug.Log("Enter BootstrapState");
     }
 
@@ -28,7 +25,7 @@ namespace Infrastructure
     }
 
     private void EnterLoadLevel() => 
-      this._stateMachine.Enter<LoadLevelState, string>(UI);
+      _stateMachine.Enter<LoadLevelState, string>(SceneNamesConsts.UI);
 
     /*private void RegisterServices()
     {

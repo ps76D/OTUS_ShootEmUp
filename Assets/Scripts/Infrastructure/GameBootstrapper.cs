@@ -9,9 +9,9 @@ namespace Infrastructure
 
     private void Awake()
     {
-      this.Game = new Game(this);
-      this.Game.StateMachine.Enter<BootstrapState>();
-
+      Game = new Game(this);
+      Game.StateMachine.Enter<BootstrapState>();
+      
       DontDestroyOnLoad(this);
     }
   }

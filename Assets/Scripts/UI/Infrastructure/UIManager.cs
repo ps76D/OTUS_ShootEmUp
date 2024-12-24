@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure;
+using Infrastructure.DI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using CharacterController = Character.CharacterController;
@@ -8,16 +9,27 @@ namespace UI.Infrastructure
 {
     public sealed class UIManager : MonoBehaviour
     {
+        [Inject]
+        [SerializeField] private GameBootstrapper _gameBootstrapper;
+        
         [SerializeField] private MainMenuScreen _mainMenuScreen;
         [SerializeField] private LoseScreen _loseScreen;
         [SerializeField] private PauseScreen _pauseScreen;
         [SerializeField] private HUDScreen _hud;
 
         private readonly Action _mainMenuShowHandler;
+        private readonly Action _hudShowHandler;
+        private readonly Action _hudHideHandler;
+        private readonly Action _loseScreenShowHandler;
+        private readonly Action _pauseScreenShowHandler;
 
         public UIManager()
         {
-            this._mainMenuShowHandler = () => ShowScreen(this._mainMenuScreen);
+            _mainMenuShowHandler = () => ShowScreen(_mainMenuScreen);
+            _hudShowHandler = () => ShowScreen(_hud);
+            _hudHideHandler = () => CloseScreen(_hud);
+            _loseScreenShowHandler = () => ShowScreen(_loseScreen);
+            _pauseScreenShowHandler = () => ShowScreen(_pauseScreen);
         }
 
         private void Awake()
@@ -27,44 +39,47 @@ namespace UI.Infrastructure
 
         private void OnEnable()
         {
-            MainMenuState.OnMainMenu += this._mainMenuShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu += _mainMenuShowHandler;
             
-            CharacterController.OnCharacterDeath += this.ShowLoseScreen;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu += _hudHideHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += _hudShowHandler;
+            
+            _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += _loseScreenShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += _pauseScreenShowHandler;
             
         }
         
         private void OnDisable()
         {
-            MainMenuState.OnMainMenu -= this._mainMenuShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu -= _mainMenuShowHandler;
             
-            CharacterController.OnCharacterDeath -= this.ShowLoseScreen;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu -= _hudHideHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= _hudShowHandler;
+            
+            _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState -= _loseScreenShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState -= _pauseScreenShowHandler;
         }
         
-        private void ShowLoseScreen()
-        {
-            ShowScreen(this._loseScreen);
-        }
-
-        private static void ShowScreen(Component screen)
+        private void ShowScreen(Component screen)
         {
             screen.gameObject.SetActive(true);
         }
 
-        public static void CloseScreen(Component screen)
+        public void CloseScreen(Component screen)
         {
             EventSystem.current.SetSelectedGameObject(null);
             screen.gameObject.SetActive(false);
         }
         
-        public void ExitGame(UIScreen screen)
+        /*public void ExitGame(UIScreen screen)
         {
             CloseScreen(screen);
-            this.ShowMainMenuScreen();
+            ShowMainMenuScreen();
         }
         
         private void ShowMainMenuScreen()
         {
-            ShowScreen(this._mainMenuScreen);
-        }
+            ShowScreen(_mainMenuScreen);
+        }*/
     }
 }

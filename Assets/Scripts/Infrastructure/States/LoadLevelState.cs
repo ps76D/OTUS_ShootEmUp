@@ -9,13 +9,14 @@ namespace Infrastructure
 
     public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
     {
-      this._stateMachine = gameStateMachine;
-      this._sceneLoader = sceneLoader;
+      _stateMachine = gameStateMachine;
+      _sceneLoader = sceneLoader;
     }
     
     public void Enter(string sceneName)
     {
-      this._sceneLoader.Load(sceneName, this.OnLoaded);
+      _sceneLoader.Load(sceneName, OnLoaded);
+      
       Debug.Log("Enter LoadLevelState");
     }
 
@@ -25,7 +26,7 @@ namespace Infrastructure
 
     private void OnLoaded()
     {
-      this._stateMachine.Enter<MainMenuState>();
+      _stateMachine.Enter<MainMenuState>();
     }
   }
 }

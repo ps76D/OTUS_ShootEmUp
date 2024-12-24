@@ -16,36 +16,36 @@ namespace Components
 
         private void OnEnable()
         {
-            if (this._isPlayer) 
+            if (_isPlayer) 
             {
-                InputManager.OnPlayerMove += this.Move;
+                InputManager.OnPlayerMove += Move;
             }
         }
         
         private void OnDisable()
         {
-            if (this._isPlayer) 
+            if (_isPlayer) 
             {
-                InputManager.OnPlayerMove -= this.Move;
+                InputManager.OnPlayerMove -= Move;
             }
         }
 
         private void Move(float value)
         {
-            this.CalcMoveXVector(value);
+            CalcMoveXVector(value);
             
-            this.MoveByRigidbodyVelocity(this._moveXVector);
+            MoveByRigidbodyVelocity(_moveXVector);
         }
 
         private void CalcMoveXVector(float value)
         {
-            this._moveXVector = new Vector2(value, 0) * Time.fixedDeltaTime;
+            _moveXVector = new Vector2(value, 0) * Time.fixedDeltaTime;
         }
         
         public void MoveByRigidbodyVelocity(Vector2 vector)
         {
-            Vector2 nextPosition = this._rigidbody2D.position + vector * this._speed;
-            this._rigidbody2D.MovePosition(nextPosition);
+            Vector2 nextPosition = _rigidbody2D.position + vector * _speed;
+            _rigidbody2D.MovePosition(nextPosition);
         }
     }
 }

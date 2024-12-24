@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public sealed class MainMenuScreen : UIScreen, IStartGameListener
+    public sealed class MainMenuScreen : UIScreen
     {
         [Inject]
         private GameBootstrapper _gameBootstrapper;
@@ -19,16 +19,16 @@ namespace UI
 
         public void Start()
         {
-            this._gameStateMachine = this._gameBootstrapper.Game.StateMachine;
+            _gameStateMachine = _gameBootstrapper.Game.StateMachine;
             
-            this._startButton.onClick.AddListener(this.StartGame);
+            _startButton.onClick.AddListener(StartGame);
         }
 
         private void StartGame()
         {
-            this._gameStateMachine.Enter<GameLoopState>();
+            _gameStateMachine.Enter<GameLoopState>();
             
-            UIManager.CloseScreen(this);
+            _uiManager.CloseScreen(this);
         }
     }
 }

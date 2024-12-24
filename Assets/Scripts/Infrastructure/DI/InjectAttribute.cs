@@ -6,4 +6,9 @@ namespace Infrastructure.DI
     {
 
     }
+    
+    public class InjectIEnumerableAttribute : Attribute
+    {
+
+    }
 }

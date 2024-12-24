@@ -1,6 +1,4 @@
-﻿using Infrastructure.DI;
-
-namespace Infrastructure
+﻿namespace Infrastructure.Listeners
 {
     public interface IUpdatableListener : IGameStateListener
     {

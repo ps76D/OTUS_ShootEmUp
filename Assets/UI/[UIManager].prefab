@@ -183,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8221915513386204836}
   - component: {fileID: 728708951584642069}
-  - component: {fileID: 1839079586425973225}
+  - component: {fileID: 1815968056}
   m_Layer: 0
   m_Name: '[UIManager]'
   m_TagString: Untagged
@@ -220,11 +220,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7175d9dc092a443d98936f04c73a7370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameBootstrapper: {fileID: 0}
   _mainMenuScreen: {fileID: 5844706555217786974}
   _loseScreen: {fileID: 5574258511809401005}
   _pauseScreen: {fileID: 2864563584681649621}
   _hud: {fileID: 123961457270782380}
---- !u!114 &1839079586425973225
+--- !u!114 &1815968056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -820,6 +821,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hud
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314039299734842594, guid: 3e6ba90b8287f5140bad34f214545fc9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8314039299734842595, guid: 3e6ba90b8287f5140bad34f214545fc9,
         type: 3}

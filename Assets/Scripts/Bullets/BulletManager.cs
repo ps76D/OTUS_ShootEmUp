@@ -23,29 +23,29 @@ namespace Bullets
         
         private void Awake()
         {
-            for (int i = 0; i < this._initialCount; i++)
+            for (int i = 0; i < _initialCount; i++)
             {
-                Bullet bullet = Instantiate(this._prefab, this._container);
-                this._bulletPool.Enqueue(bullet);
+                Bullet bullet = Instantiate(_prefab, _container);
+                _bulletPool.Enqueue(bullet);
             }
         }
 
         private void FixedUpdate()
         {
-            this._cache.Clear();
-            this._cache.AddRange(this._activeBullets);
+            _cache.Clear();
+            _cache.AddRange(_activeBullets);
 
-            this.ClearBulletsOutOfBounds();
+            ClearBulletsOutOfBounds();
         }
 
         private void ClearBulletsOutOfBounds()
         {
-            for (int i = 0, count = this._cache.Count; i < count; i++)
+            for (int i = 0, count = _cache.Count; i < count; i++)
             {
-                Bullet bullet = this._cache[i];
-                if (!this._levelBounds.CheckIsInBounds(bullet.transform.position))
+                Bullet bullet = _cache[i];
+                if (!_levelBounds.CheckIsInBounds(bullet.transform.position))
                 {
-                    this.RemoveBullet(bullet);
+                    RemoveBullet(bullet);
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace Bullets
         {
             BulletConfig config = weapon.GetBulletConfig();
             
-            this.FlyBulletByArgs(new BulletArguments
+            FlyBulletByArgs(new BulletArguments
             {
                 PhysicsLayer = (int) config._physicsLayer,
                 Color = config._color,
@@ -66,41 +66,41 @@ namespace Bullets
         
         private void FlyBulletByArgs(BulletArguments bulletArgs)
         {
-            if (this._bulletPool.TryDequeue(out var bullet))
+            if (_bulletPool.TryDequeue(out var bullet))
             {
-                bullet.transform.SetParent(this._worldTransform);
+                bullet.transform.SetParent(_worldTransform);
             }
             else
             {
-                bullet = Instantiate(this._prefab, this._worldTransform);
+                bullet = Instantiate(_prefab, _worldTransform);
             }
 
             bullet.UpdateBullet(bulletArgs);
 
-            this.CheckIfBulletCollide(bullet);
+            CheckIfBulletCollide(bullet);
         }
         
         private void CheckIfBulletCollide(Bullet bullet)
         {
-            if (this._activeBullets.Add(bullet))
+            if (_activeBullets.Add(bullet))
             {
-                bullet.OnCollisionEntered += this.OnBulletCollision;
+                bullet.OnCollisionEntered += OnBulletCollision;
             }
         }
         
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
             BulletDamageInteractor.DealDamage(bullet, collision.gameObject);
-            this.RemoveBullet(bullet);
+            RemoveBullet(bullet);
         }
 
         private void RemoveBullet(Bullet bullet)
         {
-            if (!this._activeBullets.Remove(bullet)) return;
+            if (!_activeBullets.Remove(bullet)) return;
             
-            bullet.OnCollisionEntered -= this.OnBulletCollision;
-            bullet.transform.SetParent(this._container);
-            this._bulletPool.Enqueue(bullet);
+            bullet.OnCollisionEntered -= OnBulletCollision;
+            bullet.transform.SetParent(_container);
+            _bulletPool.Enqueue(bullet);
         }
     }
 }

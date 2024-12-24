@@ -18,17 +18,17 @@ namespace Components
 
 		private void Awake()
 		{
-			this._bulletManager = FindObjectOfType<BulletManager>();
+			_bulletManager = FindObjectOfType<BulletManager>();
 		}
 
 		protected virtual private void OnEnable()
 		{
-			OnWeaponFire += this._bulletManager.OnFlyBullet;
+			OnWeaponFire += _bulletManager.OnFlyBullet;
 		}
 
 		protected virtual private void OnDisable()
 		{ 
-			OnWeaponFire -= this._bulletManager.OnFlyBullet;
+			OnWeaponFire -= _bulletManager.OnFlyBullet;
 		}
 		
 		public abstract Vector2 CalcBulletVelocity();
@@ -40,27 +40,27 @@ namespace Components
 
 		public void SetTarget(HitPointsComponent target)
 		{
-			this._weaponTarget = target;
+			_weaponTarget = target;
 		}
 
 		public BulletConfig GetBulletConfig()
 		{
-			return this._bulletConfig;
+			return _bulletConfig;
 		}
 
 		public Vector2 GetPosition()
 		{
-			return this._firePoint.position;
+			return _firePoint.position;
 		}
 
 		protected private Quaternion GetRotation()
 		{
-			return this._firePoint.rotation;
+			return _firePoint.rotation;
 		}
 
 		protected private HitPointsComponent GetTarget()
 		{
-			return this._weaponTarget;
+			return _weaponTarget;
 		}
 	}
 }

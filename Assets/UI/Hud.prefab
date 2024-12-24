@@ -348,7 +348,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006a3475174b4867a3e6adc726ed9a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uiManager: {fileID: 0}
   _hitPointsCount: {fileID: 8314039300582080174}
+  _pauseButton: {fileID: 2827234014106139438}
 --- !u!1 &8314039300052760387
 GameObject:
   m_ObjectHideFlags: 0

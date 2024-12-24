@@ -15,36 +15,36 @@ namespace Enemy
         
         private IEnumerator Start()
         {
-            while (this._isRunning)
+            while (_isRunning)
             {
                 yield return new WaitForSeconds(1);
             
-                GameObject enemy = this._enemyPool.SpawnEnemy();
+                GameObject enemy = _enemyPool.SpawnEnemy();
                 
                 if (enemy == null) continue;
                 
-                if (!this._activeEnemies.Add(enemy)) continue;
+                if (!_activeEnemies.Add(enemy)) continue;
 
-                this.InitializeEnemiesComponents(enemy);
+                InitializeEnemiesComponents(enemy);
             }
         }
         
         public void StopLoop()
         {
-            this._isRunning = false;
+            _isRunning = false;
         }
 
         private void OnDestroyed(HitPointsComponent enemy)
         {
-            if (!this._activeEnemies.Remove(enemy.gameObject)) return;
-            enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty -= this.OnDestroyed;
+            if (!_activeEnemies.Remove(enemy.gameObject)) return;
+            enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty -= OnDestroyed;
 
-            this._enemyPool.SendEnemyToPool(enemy.gameObject);
+            _enemyPool.SendEnemyToPool(enemy.gameObject);
         }
 
         private void InitializeEnemiesComponents(GameObject enemy)
         {
-            enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty += this.OnDestroyed;
+            enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty += OnDestroyed;
         }
     }
 }

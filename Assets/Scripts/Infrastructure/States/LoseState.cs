@@ -1,13 +1,20 @@
 ﻿using System;
+using GameManager;
 using UnityEngine;
 
 namespace Infrastructure
 {
   public class LoseState : IState
   {
-    public event Action OnLose;
-    public LoseState(GameStateMachine stateMachine)
+    private readonly GameStateMachine _stateMachine;
+    private readonly SceneLoader _sceneLoader;
+    
+    public event Action OnLoseState;
+    
+    public LoseState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
     {
+      _stateMachine = gameStateMachine;
+      _sceneLoader = sceneLoader;
     }
 
     public void Exit()
@@ -16,7 +23,10 @@ namespace Infrastructure
 
     public void Enter()
     {
-      OnLose?.Invoke();
+      OnLoseState?.Invoke();
+
+      /*TimeManager.StopTime(true);*/
+      
       Debug.Log("Enter LoseState");
     }
   }

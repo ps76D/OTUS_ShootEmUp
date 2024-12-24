@@ -17,36 +17,36 @@ namespace Enemy.Agents
         
         private void Awake()
         {
-            this._moveComponent =  this.GetComponent<MoveComponent>();
+            _moveComponent =  GetComponent<MoveComponent>();
         }
 
         public void SetDestination(Vector2 endPoint)
         {
-            this._destination = endPoint;
-            this.IsReached = false;
+            _destination = endPoint;
+            IsReached = false;
         }
 
         private void FixedUpdate()
         {
-            this.MoveEnemyOnPosition();
+            MoveEnemyOnPosition();
         }
 
         private void MoveEnemyOnPosition()
         {
-            if (this.IsReached)
+            if (IsReached)
             {
                 return;
             }
             
-            Vector2 vector = this._destination - (Vector2) this.transform.position;
+            Vector2 vector = _destination - (Vector2) transform.position;
             if (vector.magnitude <= 0.25f)
             {
-                this.IsReached = true;
+                IsReached = true;
                 return;
             }
 
             Vector2 direction = vector.normalized * Time.fixedDeltaTime;
-            this._moveComponent.MoveByRigidbodyVelocity(direction);
+            _moveComponent.MoveByRigidbodyVelocity(direction);
         }
     }
 }

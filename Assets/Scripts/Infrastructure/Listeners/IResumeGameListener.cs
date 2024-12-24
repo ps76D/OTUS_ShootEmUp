@@ -1,9 +1,7 @@
-﻿using Infrastructure.DI;
-
-namespace UI.Interfaces
+﻿namespace Infrastructure.Listeners
 {
     public interface IResumeGameListener : IGameStateListener
     {
-        
+        void ResumeGame();
     }
 }

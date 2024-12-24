@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Infrastructure;
 using Infrastructure.DI;
+using Infrastructure.Listeners;
 using UnityEngine;
 
 namespace UI.Infrastructure
@@ -13,25 +14,45 @@ namespace UI.Infrastructure
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
+        /*private IGameStateListener[] _gameStateListeners;*/
+        
         private void Awake()
         {
             /*_instance = this;*/
 
-            this._gameBootstrapper = FindObjectOfType<GameBootstrapper>();
-            this._uiManager = this.GetComponent<UIManager>();
+            _gameBootstrapper = FindObjectOfType<GameBootstrapper>();
+            _uiManager = GetComponent<UIManager>();
+            
+            ServiceLocator.AddService(typeof(GameBootstrapper), _gameBootstrapper);
+            ServiceLocator.AddService(typeof(UIManager), _uiManager);
+            
+            /*ServiceLocator.AddListeners<IGameStateListener>(GetAllGameStateListeners());*/
+
+            Inject();
         }
-
-        private void Start()
+        
+        /*private IEnumerable<IGameStateListener> GetAllGameStateListeners()
         {
-            ServiceLocator.AddService(typeof(GameBootstrapper), this._gameBootstrapper);
-            ServiceLocator.AddService(typeof(UIManager), this._uiManager);
+            if (_gameStateListeners == null)
+                _gameStateListeners = GetComponentsInChildren<IGameStateListener>();
+            return _gameStateListeners;
+        }*/
 
+        private void Inject()
+        {
             var allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             
             foreach(MonoBehaviour monoBehaviour in allMonoBehaviours)
             {
                 DependencyInjector.InjectObject(monoBehaviour);
             }
+            
+            /*foreach(MonoBehaviour monoBehaviour in allMonoBehaviours)
+            {
+                DependencyInjector.Inject(monoBehaviour);
+            }*/
+            
+            Debug.Log("Inject UI Objects");
         }
     }
 }

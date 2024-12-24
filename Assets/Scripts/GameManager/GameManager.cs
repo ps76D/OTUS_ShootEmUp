@@ -1,4 +1,7 @@
+using System;
 using Components;
+using Infrastructure;
+using Infrastructure.DI;
 using Input;
 using UnityEngine;
 using CharacterController = Character.CharacterController;
@@ -7,44 +10,65 @@ namespace GameManager
 {
     public sealed class GameManager : MonoBehaviour
     {
+        [Inject]
+        [SerializeField] private GameBootstrapper _gameBootstrapper;
+        
         private CharacterController _characterController;
         
         private InputManager _inputManager;
+
+        private GameStateMachine _gameStateMachine;
         
         private void Awake()
         {
-            this._characterController = FindObjectOfType<CharacterController>();
-            this._inputManager = FindObjectOfType<InputManager>();
+            _characterController = FindObjectOfType<CharacterController>();
+            _inputManager = FindObjectOfType<InputManager>();
         }
 
         private void OnEnable()
         {
-            CharacterController.OnCharacterDeath += this.FinishGame;
-            UI.LoseScreen.OnReviveButtonClicked += this.Revive;
+            _characterController.OnCharacterDeath += FinishGame;
+            
+            //TODO Переписать кусок ниже
+            UI.LoseScreen.OnReviveButtonClicked += Revive;
+        }
+        
+        private void OnDisable()
+        {
+            _characterController.OnCharacterDeath -= FinishGame;
+            
+            //TODO Переписать кусок ниже
+            UI.LoseScreen.OnReviveButtonClicked -= Revive;
+        }
+
+        private void Start()
+        {
+            _gameStateMachine = _gameBootstrapper.Game.StateMachine;
+            Debug.Log("GameManager Started");
         }
 
         private void Revive()
         {
-            HitPointsComponent character = this._characterController.Character;
+            HitPointsComponent character = _characterController.Character;
             character.Revive();
             
-            this.EnablePlayerInput(true);
+            EnablePlayerInput(true);
 
-            TimeManager.StopTime(false);
+            /*TimeManager.StopTime(false);*/
         }
 
         private void FinishGame()
         {
+            _gameStateMachine.Enter<LoseState>();
+            
             Debug.Log("Game over!");
             
-            this.EnablePlayerInput(false);
-            
-            TimeManager.StopTime(true);
+            EnablePlayerInput(false);
         }
 
         private void EnablePlayerInput(bool value)
         {
-            this._inputManager.gameObject.SetActive(value);
+            _inputManager.gameObject.SetActive(value);
         }
     }
 }

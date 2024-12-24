@@ -1,4 +1,6 @@
-﻿using Infrastructure.DI;
+﻿using System;
+using Infrastructure;
+using Infrastructure.DI;
 using UI.Infrastructure;
 using UI.Interfaces;
 using UnityEngine;
@@ -6,25 +8,35 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public sealed class PauseScreen : UIScreen, IPauseGameListener
+    public sealed class PauseScreen : UIScreen
     {
+        [Inject]
+        private GameBootstrapper _gameBootstrapper;
+        
         [SerializeField] private Button _resumeButton;
         [SerializeField] private Button _exitButton;
         
+        private GameStateMachine _gameStateMachine;
+        
         public void Start()
         {
-            this._resumeButton.onClick.AddListener(this.ResumeGame);
-            this._exitButton.onClick.AddListener(this.ResumeGame);
+            _gameStateMachine = _gameBootstrapper.Game.StateMachine;
+            
+            _resumeButton.onClick.AddListener(ResumeGame);
+            _exitButton.onClick.AddListener(ExitGame);
         }
         
         private void ResumeGame()
         {
-            UIManager.CloseScreen(this);
+            _gameStateMachine.Enter<GameLoopState>();
+            _uiManager.CloseScreen(this);
         }
         
         private void ExitGame()
         {
-            this._uiManager.ExitGame(this);
+            _gameStateMachine.Enter<MainMenuState>();
+            
+            _uiManager.CloseScreen(this);
         }
     }
 }

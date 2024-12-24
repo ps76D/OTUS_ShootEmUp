@@ -8,18 +8,18 @@ namespace Character
     {
         [SerializeField] private HitPointsComponent _character;
 
-        public HitPointsComponent Character => this._character;
+        public HitPointsComponent Character => _character;
 
-        public static event Action OnCharacterDeath;
+        public event Action OnCharacterDeath;
 
         private void OnEnable()
         {
-            this._character.OnHitPointsEmpty += this.CharacterDeath;
+            _character.OnHitPointsEmpty += CharacterDeath;
         }
 
         private void OnDisable()
         {
-            this._character.OnHitPointsEmpty -= this.CharacterDeath;
+            _character.OnHitPointsEmpty -= CharacterDeath;
         }
 
         private void CharacterDeath(HitPointsComponent _)

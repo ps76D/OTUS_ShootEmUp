@@ -10,12 +10,12 @@ namespace Enemy
 
         public Transform RandomSpawnPosition()
         {
-            return this.RandomTransform(this._spawnPositions);
+            return RandomTransform(_spawnPositions);
         }
 
         public Transform RandomAttackPosition()
         {
-            return this.RandomTransform(this._attackPositions);
+            return RandomTransform(_attackPositions);
         }
 
         private Transform RandomTransform(Transform[] transforms)

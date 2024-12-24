@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DI;
+using Infrastructure.Listeners;
 using UI.Interfaces;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace UI.Infrastructure
     public abstract class UIScreen : MonoBehaviour, IGameStateListener, IUIScreen
     {
         [Inject]
-        [SerializeField] internal UIManager _uiManager;
+        [SerializeField] protected UIManager _uiManager;
         
         /*private void Start()
         {
