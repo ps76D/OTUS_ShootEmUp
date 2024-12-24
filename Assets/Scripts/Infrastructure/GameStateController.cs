@@ -27,16 +27,18 @@ namespace Infrastructure
         {
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += PauseGame;
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += FinishGame;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += StartGame;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += ResumeGame;
+            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += InGame;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState += StartGame;
+            /*_gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += ResumeGame;*/
         }
         
         private void OnDisable()
         {
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState -= PauseGame;
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState -= FinishGame;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= StartGame;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= ResumeGame;
+            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= InGame;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState -= StartGame;
+            /*_gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= ResumeGame;*/
         }
 
         private void StartGame()
@@ -46,6 +48,17 @@ namespace Infrastructure
                 if (listener is IStartGameListener currentListener)
                 {
                     currentListener.StartGame();
+                }
+            }
+        }
+        
+        private void InGame()
+        {
+            foreach (var listener in _gameStateListeners)
+            {
+                if (listener is IInGameListener currentListener)
+                {
+                    currentListener.InGame();
                 }
             }
         }

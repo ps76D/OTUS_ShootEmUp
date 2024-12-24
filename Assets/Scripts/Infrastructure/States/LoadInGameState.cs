@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using GameManager;
 using UI;
 using UI.Infrastructure;
@@ -7,16 +6,14 @@ using UnityEngine;
 
 namespace Infrastructure
 {
-  public class MainMenuState : IState
+  public class LoadInGameState : IState
   {
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
     private readonly LoadingCurtain _loadingCurtain;
+    public event Action OnGameLoopSceneLoaded;
     
-    public event Action OnMainMenuState;
-    public event Action OnMainMenuSceneLoaded;
-
-    public MainMenuState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
+    public LoadInGameState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
@@ -25,27 +22,28 @@ namespace Infrastructure
 
     public void Exit()
     {
+      _sceneLoader.ReLoad(SceneNamesConsts.Game, OnLoaded, OnLoadStart);
     }
 
     public void Enter()
     {
-      _sceneLoader.ReLoad(SceneNamesConsts.MainMenu, OnLoaded, OnLoadStart);
+      _stateMachine.Enter<GameLoopState>();
       
-      OnMainMenuState?.Invoke();
-      
-      Debug.Log("Enter MainMenuState");
+      Debug.Log("Enter LoadInGameState");
     }
     
     private void OnLoaded()
     {
+      OnGameLoopSceneLoaded?.Invoke();
       _loadingCurtain.Show();
       
-      OnMainMenuSceneLoaded?.Invoke();
+      _stateMachine.Enter<GameLoopState>();
+      
     }
     
     private void OnLoadStart()
     {
-      _loadingCurtain.Hide();;
+      _loadingCurtain.Hide();
     }
   }
 }

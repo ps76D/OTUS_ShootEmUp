@@ -2,7 +2,6 @@
 using Infrastructure;
 using Infrastructure.DI;
 using UI.Infrastructure;
-using UI.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +9,7 @@ namespace UI
 {
     public sealed class MainMenuScreen : UIScreen
     {
-        [Inject]
+        [InjectCustom]
         private GameBootstrapper _gameBootstrapper;
 
         [SerializeField] private Button _startButton;
@@ -26,7 +25,7 @@ namespace UI
 
         private void StartGame()
         {
-            _gameStateMachine.Enter<GameLoopState>();
+            _gameStateMachine.Enter<LoadInGameState>();
             
             _uiManager.CloseScreen(this);
         }

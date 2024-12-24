@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameManager
 {
-    public class TimeManager : MonoBehaviour, IPauseGameListener, IStartGameListener, IFinishGameListener, IResumeGameListener
+    public class TimeManager : MonoBehaviour, IPauseGameListener, IStartGameListener, IFinishGameListener, IResumeGameListener, IInGameListener
     {
         private void Awake()
         {
@@ -32,6 +32,11 @@ namespace GameManager
         }
 
         public void ResumeGame()
+        {
+            StopTime(false);
+        }
+        
+        public void InGame()
         {
             StopTime(false);
         }

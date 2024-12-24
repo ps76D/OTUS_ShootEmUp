@@ -6,6 +6,7 @@ namespace Components
     public sealed class HitPointsComponent : MonoBehaviour
     {
         [SerializeField] private int _startHitPoints;
+        [SerializeField] private Collider2D _collider;
 
         private int _hitPoints;
         
@@ -47,6 +48,11 @@ namespace Components
         public int GetCurrentHitPointsValue()
         {
             return _hitPoints;
+        }
+
+        public void TurnOnOffCollider(bool value)
+        {
+            _collider.enabled = value;
         }
     }
 }

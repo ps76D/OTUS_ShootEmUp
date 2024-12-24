@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startHitPoints: 5
-  _hitPoints: 0
+  _collider: {fileID: 4249531304039814043}
 --- !u!114 &3926786964091724598
 MonoBehaviour:
   m_ObjectHideFlags: 0

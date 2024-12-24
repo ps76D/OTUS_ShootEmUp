@@ -1,15 +1,15 @@
 ﻿using Character;
 using Infrastructure;
 using Infrastructure.DI;
+using Infrastructure.Listeners;
 using TMPro;
 using UI.Infrastructure;
-using UI.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public sealed class HUDScreen : UIScreen, IInGameListener
+    public sealed class HUDScreen : UIScreen
     {
         [InjectCustom]
         private GameBootstrapper _gameBootstrapper;
