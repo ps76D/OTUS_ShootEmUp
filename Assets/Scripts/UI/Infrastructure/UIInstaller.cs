@@ -11,6 +11,7 @@ namespace UI.Infrastructure
     {
         /*private static UIInstaller _instance;*/
         
+        /*[SerializeField] private UIManager _uiManagerPrefab;*/
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
@@ -18,8 +19,11 @@ namespace UI.Infrastructure
         
         private void Awake()
         {
+            /*DontDestroyOnLoad(this);*/
             /*_instance = this;*/
 
+            /*Instantiate(_uiManagerPrefab);*/
+            
             _gameBootstrapper = FindObjectOfType<GameBootstrapper>();
             _uiManager = GetComponent<UIManager>();
             

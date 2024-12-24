@@ -8,7 +8,7 @@ namespace Infrastructure.DI
 {
     public sealed class Installer : MonoBehaviour
     {
-        private static Installer _instance;
+        // private static Installer _instance;
 
         private IUpdatableListener[] _updatableItems;
         private IGameStateListener[] _gameStateListeners;
@@ -46,9 +46,10 @@ namespace Infrastructure.DI
 
         private void Awake()
         {
-            _instance = this;
+            DontDestroyOnLoad(this);
+            // _instance = this;
             /*ServiceLocator.AddListeners<IUpdatableListener>(_instance.GetAllUpdatableItems());*/
-            ServiceLocator.AddListeners<IGameStateListener>(_instance.GetAllGameStateListeners());
+            ServiceLocator.AddListeners<IGameStateListener>(GetAllGameStateListeners());
             /*ServiceLocator.AddListeners<GameBootstrapper>(_instance.GetGameBootstrapper());*/
             
             /*ServiceLocator.AddListeners<IUserInputListener>(instance.GetAllUserInputListeners());*/

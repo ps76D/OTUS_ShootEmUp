@@ -17,24 +17,30 @@ namespace UI.Infrastructure
         [SerializeField] private PauseScreen _pauseScreen;
         [SerializeField] private HUDScreen _hud;
 
-        private readonly Action _mainMenuShowHandler;
-        private readonly Action _hudShowHandler;
-        private readonly Action _hudHideHandler;
-        private readonly Action _loseScreenShowHandler;
-        private readonly Action _pauseScreenShowHandler;
+        private Action _mainMenuShowHandler;
+        private Action _hudShowHandler;
+        private Action _hudHideHandler;
+        private Action _loseScreenShowHandler;
+        private Action _pauseScreenShowHandler;
 
-        public UIManager()
+        /*public UIManager()
         {
             _mainMenuShowHandler = () => ShowScreen(_mainMenuScreen);
             _hudShowHandler = () => ShowScreen(_hud);
             _hudHideHandler = () => CloseScreen(_hud);
             _loseScreenShowHandler = () => ShowScreen(_loseScreen);
             _pauseScreenShowHandler = () => ShowScreen(_pauseScreen);
-        }
+        }*/
 
         private void Awake()
         {
             DontDestroyOnLoad(this);
+            
+            _mainMenuShowHandler = () => ShowScreen(_mainMenuScreen);
+            _hudShowHandler = () => ShowScreen(_hud);
+            _hudHideHandler = () => CloseScreen(_hud);
+            _loseScreenShowHandler = () => ShowScreen(_loseScreen);
+            _pauseScreenShowHandler = () => ShowScreen(_pauseScreen);
         }
 
         private void OnEnable()

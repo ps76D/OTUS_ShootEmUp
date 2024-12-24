@@ -8,7 +8,6 @@ namespace Infrastructure
 {
     public class GameStateController : MonoBehaviour
     {
-        /*[Inject]*/
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         /*[Inject]
@@ -21,7 +20,9 @@ namespace Infrastructure
 
         private void Awake()
         {
-
+            _gameBootstrapper = FindObjectOfType<GameBootstrapper>();
+            
+            /*_gameStateMachine = _gameBootstrapper.Game.StateMachine;*/
         }
 
         /*public GameStateController()
@@ -38,18 +39,18 @@ namespace Infrastructure
 
             /*_gameStateMachine = GetComponent<GameBootstrapper>().Game.StateMachine;*/
             
-            /*_gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += PauseGame;
+            _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += PauseGame;
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += FinishGame;
             _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += StartGame;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += ResumeGame;*/
+            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += ResumeGame;
         }
         
         private void OnDisable()
         {
-            /*_gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState -= PauseGame;
+            _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState -= PauseGame;
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState -= FinishGame;
             _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= StartGame;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= ResumeGame;*/
+            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= ResumeGame;
         }
 
         private void StartGame()
