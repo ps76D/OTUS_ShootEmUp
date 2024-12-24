@@ -5,6 +5,7 @@ using UI.Infrastructure;
 using UI.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {

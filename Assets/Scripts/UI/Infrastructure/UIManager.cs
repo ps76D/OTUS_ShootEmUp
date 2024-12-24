@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.DI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 using CharacterController = Character.CharacterController;
 
 namespace UI.Infrastructure

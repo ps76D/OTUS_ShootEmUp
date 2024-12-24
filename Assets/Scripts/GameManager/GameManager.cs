@@ -4,6 +4,7 @@ using Infrastructure;
 using Infrastructure.DI;
 using Input;
 using UnityEngine;
+using Zenject;
 using CharacterController = Character.CharacterController;
 
 namespace GameManager
