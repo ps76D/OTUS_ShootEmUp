@@ -37,7 +37,7 @@ namespace Infrastructure.DI
             {
                 FieldInfo fieldInfo = fields[index];
                 
-                if (!fieldInfo.IsDefined(typeof(InjectAttribute), false)) continue;
+                if (!fieldInfo.IsDefined(typeof(InjectCustomAttribute), false)) continue;
                 
                 Type fieldType = fieldInfo.FieldType;
                 object value = ServiceLocator.GetService(fieldType);

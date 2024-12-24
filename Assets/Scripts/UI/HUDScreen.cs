@@ -11,7 +11,7 @@ namespace UI
 {
     public sealed class HUDScreen : UIScreen, IInGameListener
     {
-        [Inject]
+        [InjectCustom]
         private GameBootstrapper _gameBootstrapper;
         
         [SerializeField] private TMP_Text _hitPointsCount;

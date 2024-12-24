@@ -10,7 +10,7 @@ namespace UI
 {
     public sealed class PauseScreen : UIScreen
     {
-        [Inject]
+        [InjectCustom]
         private GameBootstrapper _gameBootstrapper;
         
         [SerializeField] private Button _resumeButton;

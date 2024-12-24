@@ -2,7 +2,7 @@
 
 namespace Infrastructure.DI
 {
-    public class InjectAttribute : Attribute
+    public class InjectCustomAttribute : Attribute
     {
 
     }
