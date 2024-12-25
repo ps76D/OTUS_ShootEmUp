@@ -1,9 +1,10 @@
 using Components;
+using Infrastructure.CommonInterfaces;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyMoveInteractor : MonoBehaviour
+    public sealed class EnemyMoveInteractor : MonoBehaviour, IFixedUpdatable
     {
         public bool IsReached 
         {
@@ -26,7 +27,7 @@ namespace Enemy.Agents
             IsReached = false;
         }
 
-        private void FixedUpdate()
+        public void CustomFixedUpdate()
         {
             MoveEnemyOnPosition();
         }

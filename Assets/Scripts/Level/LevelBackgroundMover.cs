@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using Infrastructure.CommonInterfaces;
 
 namespace Level
 {
-    public sealed class LevelBackgroundMover : MonoBehaviour
+    public sealed class LevelBackgroundMover : MonoBehaviour, IFixedUpdatable
     {
         [SerializeField] private BackgroundMovementConfig _config;
 
@@ -21,46 +22,46 @@ namespace Level
 
         private void Awake()
         {
-            this.InitializeBackground();
+            InitializeBackground();
         }
-
-        private void FixedUpdate()
+        
+        public void CustomFixedUpdate()
         {
-            this.MoveBackground();
+            MoveBackground();
         }
 
         private void InitializeBackground()
         {
-            this._startPositionY = this._config._startPositionY;
-            this._endPositionY = this._config._endPositionY;
-            this._movingSpeedY = this._config._movingSpeedY;
+            _startPositionY = _config._startPositionY;
+            _endPositionY = _config._endPositionY;
+            _movingSpeedY = _config._movingSpeedY;
             
-            this._backTransform = this.transform;
-            Vector3 position = this._backTransform.position;
+            _backTransform = transform;
+            Vector3 position = _backTransform.position;
             
-            this._startPositionVector = position;
-            this._startPositionVector.y = this._startPositionY;
+            _startPositionVector = position;
+            _startPositionVector.y = _startPositionY;
             
-            this._positionDeltaVector = new Vector3();
+            _positionDeltaVector = new Vector3();
         }
 
         private void MoveBackground()
         {
-            if (this._backTransform.position.y <= this._endPositionY)
+            if (_backTransform.position.y <= _endPositionY)
             {
-                this._backTransform.position = this._startPositionVector;
+                _backTransform.position = _startPositionVector;
             }
 
-            this.CalculateYPositionDelta();
+            CalculateYPositionDelta();
             
-            this._backTransform.position -= this._positionDeltaVector;
+            _backTransform.position -= _positionDeltaVector;
         }
-        
+
         private void CalculateYPositionDelta()
         {
-            float positionYDelta = this._movingSpeedY * Time.fixedDeltaTime;
+            float positionYDelta = _movingSpeedY * Time.fixedDeltaTime;
             
-            this._positionDeltaVector.y = positionYDelta;
+            _positionDeltaVector.y = positionYDelta;
         }
 
 

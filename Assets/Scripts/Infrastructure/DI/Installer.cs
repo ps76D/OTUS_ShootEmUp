@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using GameManager.Listeners;
+using Infrastructure.CommonInterfaces;
 using Infrastructure.Listeners;
 using UI;
 using UI.Infrastructure;
@@ -14,8 +15,6 @@ namespace Infrastructure.DI
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private GameBootstrapper _gameBootstrapper;
 
-        
-        private IUpdatableListener[] _updatableItems;
         private IGameStateListener[] _gameStateListeners;
         private IGameListener[] _gameListeners;
 

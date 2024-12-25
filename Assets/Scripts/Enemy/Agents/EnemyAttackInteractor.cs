@@ -1,9 +1,10 @@
 using Components;
+using Infrastructure.CommonInterfaces;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyAttackInteractor : MonoBehaviour
+    public sealed class EnemyAttackInteractor : MonoBehaviour, IFixedUpdatable
     {
         [SerializeField] private float _attackCooldown;
 
@@ -31,7 +32,11 @@ namespace Enemy.Agents
             _currentTime = _attackCooldown;
         }
 
-        private void FixedUpdate()
+        public void CustomFixedUpdate()
+        {
+        }
+
+        public void FixedUpdate()
         {
             if (!CheckEnemyIsOnPosition()) 
             {
@@ -45,7 +50,7 @@ namespace Enemy.Agents
 
             EnemyFireWithCooldown();
         }
-
+        
         private bool CheckEnemyIsOnPosition()
         {
             return _enemyMoveInteractor.IsReached;

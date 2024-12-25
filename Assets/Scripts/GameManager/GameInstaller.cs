@@ -1,6 +1,9 @@
-﻿using Infrastructure;
+﻿using System.Collections.Generic;
+using Infrastructure;
 using Infrastructure.DI;
+using UI.Infrastructure;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using CharacterController = Character.CharacterController;
 
 namespace GameManager
@@ -18,11 +21,12 @@ namespace GameManager
             _dependencyInjector = new InGameDependencyInjector(_serviceLocator);
             
             _serviceLocator.AddService(typeof(CharacterController), _character);
-
-            Inject();
+            
+            InjectCommon();
+            InjectLocal();
         }
         
-        private void Inject()
+        private void InjectLocal()
         {
             var allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             
@@ -32,6 +36,18 @@ namespace GameManager
             }
             
             Debug.Log("Inject Game Objects");
+        }
+        
+        private void InjectCommon()
+        {
+            var allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
+            
+            foreach(MonoBehaviour monoBehaviour in allMonoBehaviours)
+            {
+                DependencyInjector.InjectObject(monoBehaviour);
+            }
+            
+            Debug.Log("Inject Common Objects in Scene");
         }
     }
 }

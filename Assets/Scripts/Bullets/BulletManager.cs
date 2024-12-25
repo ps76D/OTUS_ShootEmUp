@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Components;
+using Infrastructure.CommonInterfaces;
 using Level;
 using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class BulletManager : MonoBehaviour
+    public sealed class BulletManager : MonoBehaviour, IFixedUpdatable
     {
         [SerializeField] private int _initialCount = 50;
 
@@ -30,7 +31,7 @@ namespace Bullets
             }
         }
 
-        private void FixedUpdate()
+        public void CustomFixedUpdate()
         {
             _cache.Clear();
             _cache.AddRange(_activeBullets);
