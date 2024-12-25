@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Infrastructure.Listeners;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ namespace GameManager
 {
     public class TimeManager : MonoBehaviour, IPauseGameListener, IStartGameListener, IFinishGameListener, IResumeGameListener, IInGameListener
     {
+        [SerializeField] private float _duration = 3f;
+        [SerializeField] private float _startOffset;
         private void Awake()
         {
             DontDestroyOnLoad(this);
@@ -33,12 +36,20 @@ namespace GameManager
 
         public void ResumeGame()
         {
-            StopTime(false);
+            StartCoroutine(StopTimeCoroutine(false));
         }
         
         public void InGame()
         {
-            StopTime(false);
+            StopTime(true);
+            StartCoroutine(StopTimeCoroutine(false));
+        }
+
+        private IEnumerator StopTimeCoroutine(bool value)
+        {
+            yield return new WaitForSecondsRealtime(_duration + _startOffset);
+            
+            StopTime(value);
         }
     }
 }

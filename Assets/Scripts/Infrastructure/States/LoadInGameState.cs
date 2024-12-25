@@ -11,8 +11,9 @@ namespace Infrastructure
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
     private readonly LoadingCurtain _loadingCurtain;
+    public event Action OnLoadInGameState;
     public event Action OnGameLoopSceneLoaded;
-    
+ 
     public LoadInGameState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
     {
       _stateMachine = gameStateMachine;
@@ -22,19 +23,21 @@ namespace Infrastructure
 
     public void Exit()
     {
-      _sceneLoader.ReLoad(SceneNamesConsts.Game, OnLoaded, OnLoadStart);
     }
 
     public void Enter()
     {
-      _stateMachine.Enter<GameLoopState>();
+      _sceneLoader.ReLoad(SceneNamesConsts.Game, OnLoaded, OnLoadStart);
       
+      OnLoadInGameState?.Invoke();
+
       Debug.Log("Enter LoadInGameState");
     }
     
     private void OnLoaded()
     {
       OnGameLoopSceneLoaded?.Invoke();
+      
       _loadingCurtain.Show();
       
       _stateMachine.Enter<GameLoopState>();

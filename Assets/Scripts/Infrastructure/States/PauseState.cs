@@ -23,9 +23,7 @@ namespace Infrastructure
     public void Enter()
     {
       OnPauseState?.Invoke();
-      
-      /*TimeManager.StopTime(true);*/
-      
+ 
       Debug.Log("Enter PauseState");
     }
 

@@ -1,44 +1,37 @@
-﻿using System.Linq;
-using Infrastructure;
+﻿using Infrastructure;
 using Infrastructure.DI;
-using UI.Infrastructure;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using CharacterController = Character.CharacterController;
 
 namespace GameManager
 {
     public class GameInstaller : MonoBehaviour
     {
-        /*[SerializeField] private GameBootstrapper _gameBootstrapper;*/
-        
+        [SerializeField] private CharacterController _character;
+
+        private InGameServiceLocator _serviceLocator;
+        private InGameDependencyInjector _dependencyInjector;
+
         private void Awake()
         {
-            /*_instance = this;*/
+            _serviceLocator = new InGameServiceLocator();
+            _dependencyInjector = new InGameDependencyInjector(_serviceLocator);
+            
+            _serviceLocator.AddService(typeof(CharacterController), _character);
 
             Inject();
         }
         
         private void Inject()
         {
-            var allMonoBehaviours = FindObjectsInActiveScene<MonoBehaviour>();
+            var allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             
             foreach(MonoBehaviour monoBehaviour in allMonoBehaviours)
             {
-                DependencyInjector.InjectObject(monoBehaviour);
-
+                _dependencyInjector.InjectLocalObject(monoBehaviour);
             }
             
             Debug.Log("Inject Game Objects");
-        }
-
-        private T[] FindObjectsInActiveScene<T>() where T : Object
-        {
-            Scene activeScene = SceneManager.GetActiveScene();
-            var rootObjects = activeScene.GetRootGameObjects();
-
-            return rootObjects
-                .SelectMany(go => go.GetComponentsInChildren<T>(true))
-                .ToArray();
         }
     }
 }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Components;
+using GameManager.Listeners;
 using Infrastructure;
 using Infrastructure.DI;
 using Input;
@@ -13,7 +15,7 @@ namespace GameManager
         [InjectCustom]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
-        private CharacterController _characterController;
+        [SerializeField] private CharacterController _characterController;
         
         private InputManager _inputManager;
 
@@ -28,7 +30,7 @@ namespace GameManager
         private void OnEnable()
         {
             _characterController.OnCharacterDeath += FinishGame;
-            
+
             //TODO Переписать кусок ниже
             UI.LoseScreen.OnReviveButtonClicked += Revive;
         }
@@ -56,8 +58,6 @@ namespace GameManager
             character.Revive();
             
             EnablePlayerInput(true);
-
-            /*TimeManager.StopTime(false);*/
         }
 
         private void FinishGame()

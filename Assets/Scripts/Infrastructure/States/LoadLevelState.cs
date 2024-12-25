@@ -18,7 +18,6 @@ namespace Infrastructure
     
     public void Enter()
     {
-      /*_loadingCurtain.Show();*/
       _sceneLoader.Load(SceneNamesConsts.Common, OnLoaded, OnLoadStart);
       
       Debug.Log("Enter LoadLevelState");
@@ -26,7 +25,6 @@ namespace Infrastructure
 
     public void Exit()
     {
-      /*_loadingCurtain.Hide();*/
     }
 
     private void OnLoaded()

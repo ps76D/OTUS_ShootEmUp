@@ -29,7 +29,6 @@ namespace Infrastructure
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += FinishGame;
             _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += InGame;
             _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState += StartGame;
-            /*_gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += ResumeGame;*/
         }
         
         private void OnDisable()
@@ -38,7 +37,6 @@ namespace Infrastructure
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState -= FinishGame;
             _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= InGame;
             _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState -= StartGame;
-            /*_gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= ResumeGame;*/
         }
 
         private void StartGame()
@@ -70,17 +68,6 @@ namespace Infrastructure
                 if (listener is IPauseGameListener currentListener)
                 {
                     currentListener.PauseGame();
-                }
-            }
-        }
-
-        private void ResumeGame()
-        {
-            foreach (var listener in _gameStateListeners)
-            {
-                if (listener is IResumeGameListener currentListener)
-                {
-                    currentListener.ResumeGame();
                 }
             }
         }

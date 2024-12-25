@@ -19,9 +19,7 @@ namespace UI
         private GameStateMachine _gameStateMachine;
         
         public static event Action OnReviveButtonClicked;
-        public static event Action OnRestartButtonClicked;
-        public static event Action OnExitButtonClicked;
-        
+
         public void Start()
         {            
             _gameStateMachine = _gameBootstrapper.Game.StateMachine;
@@ -43,8 +41,6 @@ namespace UI
         private void RestartGame()
         {
             _gameStateMachine.Enter<LoadInGameState>();
-            
-            OnRestartButtonClicked?.Invoke();
 
             _uiManager.CloseScreen(this);
         }
@@ -52,8 +48,6 @@ namespace UI
         private void ExitGame()
         {
             _gameStateMachine.Enter<MainMenuState>();
-            
-            OnExitButtonClicked?.Invoke();
 
             _uiManager.CloseScreen(this);
         }
