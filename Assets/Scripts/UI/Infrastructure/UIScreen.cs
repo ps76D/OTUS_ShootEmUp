@@ -1,6 +1,5 @@
 ﻿using Infrastructure.DI;
 using Infrastructure.Listeners;
-using UI.Interfaces;
 using UnityEngine;
 
 namespace UI.Infrastructure

@@ -25,7 +25,7 @@ namespace Infrastructure
     }
 
     private void EnterLoadLevel() => 
-      _stateMachine.Enter<LoadLevelState, string>(SceneNamesConsts.Common);
+      _stateMachine.Enter<LoadLevelState>();
 
     /*private void RegisterServices()
     {

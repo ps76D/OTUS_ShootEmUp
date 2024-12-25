@@ -2,7 +2,6 @@
 using Infrastructure;
 using Infrastructure.DI;
 using UI.Infrastructure;
-using UI.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,7 +42,7 @@ namespace UI
         
         private void RestartGame()
         {
-            _gameStateMachine.Enter<RestartState>();
+            _gameStateMachine.Enter<LoadInGameState>();
             
             OnRestartButtonClicked?.Invoke();
 

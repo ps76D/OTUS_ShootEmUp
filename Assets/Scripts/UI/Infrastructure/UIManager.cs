@@ -10,7 +10,7 @@ namespace UI.Infrastructure
 {
     public sealed class UIManager : MonoBehaviour
     {
-        [Inject]
+        [InjectCustom]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         [SerializeField] private MainMenuScreen _mainMenuScreen;
@@ -37,10 +37,10 @@ namespace UI.Infrastructure
             _loseScreenShowHandler = () => ShowScreen(_loseScreen);
             _pauseScreenShowHandler = () => ShowScreen(_pauseScreen);
             
-            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu += _mainMenuShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuSceneLoaded += _mainMenuShowHandler;
             
-            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu += _hudHideHandler;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState += _hudShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState += _hudHideHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<LoadInGameState>().OnGameLoopSceneLoaded += _hudShowHandler;
             
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += _loseScreenShowHandler;
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += _pauseScreenShowHandler;
@@ -48,10 +48,10 @@ namespace UI.Infrastructure
         
         private void OnDisable()
         {
-            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu -= _mainMenuShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuSceneLoaded -= _mainMenuShowHandler;
             
-            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenu -= _hudHideHandler;
-            _gameBootstrapper.Game.StateMachine.GetState<GameLoopState>().OnGameLoopState -= _hudShowHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState -= _hudHideHandler;
+            _gameBootstrapper.Game.StateMachine.GetState<LoadInGameState>().OnGameLoopSceneLoaded -= _hudShowHandler;
             
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState -= _loseScreenShowHandler;
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState -= _pauseScreenShowHandler;

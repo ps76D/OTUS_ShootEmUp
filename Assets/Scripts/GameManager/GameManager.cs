@@ -11,7 +11,7 @@ namespace GameManager
 {
     public sealed class GameManager : MonoBehaviour
     {
-        [Inject]
+        [InjectCustom]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         private CharacterController _characterController;
@@ -51,6 +51,9 @@ namespace GameManager
         private void Revive()
         {
             HitPointsComponent character = _characterController.Character;
+
+            character.TurnOnOffCollider(true);
+            
             character.Revive();
             
             EnablePlayerInput(true);
@@ -61,6 +64,9 @@ namespace GameManager
         private void FinishGame()
         {
             _gameStateMachine.Enter<LoseState>();
+
+            HitPointsComponent character = _characterController.Character;
+            character.TurnOnOffCollider(false);
             
             Debug.Log("Game over!");
             

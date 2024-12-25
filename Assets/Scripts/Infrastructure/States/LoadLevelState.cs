@@ -1,32 +1,42 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 
 namespace Infrastructure
 {
-  public class LoadLevelState : IPayloadedState<string>
+  public class LoadLevelState : IState
   {
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
+    private readonly LoadingCurtain _loadingCurtain;
 
-    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
+    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
+      _loadingCurtain = loadingCurtain;
     }
     
-    public void Enter(string sceneName)
+    public void Enter()
     {
-      _sceneLoader.Load(sceneName, OnLoaded);
+      /*_loadingCurtain.Show();*/
+      _sceneLoader.Load(SceneNamesConsts.Common, OnLoaded, OnLoadStart);
       
       Debug.Log("Enter LoadLevelState");
     }
 
     public void Exit()
     {
+      /*_loadingCurtain.Hide();*/
     }
 
     private void OnLoaded()
     {
       _stateMachine.Enter<MainMenuState>();
+    }
+    
+    private void OnLoadStart()
+    {
+      _loadingCurtain.Hide();;
     }
   }
 }
