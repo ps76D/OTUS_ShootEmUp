@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Components;
+using Enemy.Agents;
 using UnityEngine;
 
 namespace Enemy
@@ -8,43 +9,55 @@ namespace Enemy
     public sealed class EnemyManager : MonoBehaviour
     {
         [SerializeField] private EnemyPool _enemyPool;
+        [SerializeField] private GameObject _prefab;
+        [SerializeField] private Transform _worldTransform;
+        [SerializeField] private EnemyPositionsProvider _enemyPositionsProvider;
         
-        private readonly HashSet<GameObject> _activeEnemies = new ();
+        [SerializeField] private HitPointsComponent _character;
         
-        private bool _isRunning = true;
-        
-        private IEnumerator Start()
-        {
-            while (_isRunning)
-            {
-                yield return new WaitForSeconds(1);
-            
-                GameObject enemy = _enemyPool.SpawnEnemy();
-                
-                if (enemy == null) continue;
-                
-                if (!_activeEnemies.Add(enemy)) continue;
-
-                InitializeEnemiesComponents(enemy);
-            }
-        }
-        
-        public void StopLoop()
-        {
-            _isRunning = false;
-        }
-
         private void OnDestroyed(HitPointsComponent enemy)
         {
-            if (!_activeEnemies.Remove(enemy.gameObject)) return;
+            if (!_enemyPool.ActiveEnemies.Remove(enemy.gameObject)) return;
             enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty -= OnDestroyed;
 
             _enemyPool.SendEnemyToPool(enemy.gameObject);
         }
 
-        private void InitializeEnemiesComponents(GameObject enemy)
+        public void InitializeEnemiesComponents(GameObject enemy)
         {
             enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty += OnDestroyed;
+        }
+        
+        public GameObject CreateEnemy(Transform container)
+        {
+            GameObject enemy = Instantiate(_prefab, container);
+
+            return enemy;
+        }
+        
+        public GameObject SpawnEnemy()
+        {
+            if (!_enemyPool.EnemyPoolLocal.TryDequeue(out GameObject enemy))
+            {
+                return null;
+            }
+
+            enemy.transform.SetParent(_worldTransform);
+
+            var spawnPosition = _enemyPositionsProvider.RandomSpawnPosition();
+            enemy.transform.position = spawnPosition.transform.position;
+            
+            var attackPosition = _enemyPositionsProvider.RandomAttackPosition();
+
+            var enemyMoveInteractor = enemy.GetComponent<EnemyMoveInteractor>();
+            enemyMoveInteractor.AttackPosition = attackPosition;
+            enemyMoveInteractor.AttackPosition._isNotEmpty = true;
+            enemyMoveInteractor.SetDestination(attackPosition.transform.position);
+
+            enemy.GetComponent<EnemyAttackInteractor>().SetTarget(_character);
+            enemy.GetComponent<EnemyWeapon>().SetTarget(_character);
+            
+            return enemy;
         }
     }
 }

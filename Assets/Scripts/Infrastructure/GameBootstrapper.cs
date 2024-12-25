@@ -8,8 +8,11 @@ namespace Infrastructure
   public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
   {
     [SerializeField] private LoadingCurtain _loadingCurtain;
+    [SerializeField] private Camera _commonCamera;
     
     public Game Game;
+
+    public Camera CommonCamera => _commonCamera;
 
     private void Awake()
     {

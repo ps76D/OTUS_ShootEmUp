@@ -1,6 +1,8 @@
 using System;
 using Infrastructure.CommonInterfaces;
+using Level;
 using UnityEngine;
+
 
 namespace Input
 {
@@ -8,9 +10,9 @@ namespace Input
     {
         [SerializeField] private float _moveStep = 1.0f;
         
-        public static event Action OnPlayerFire;
+        public event Action OnPlayerFire;
         
-        public static event Action<float> OnPlayerMove;
+        public event Action<float> OnPlayerMove;
         
         public void CustomUpdate()
         {

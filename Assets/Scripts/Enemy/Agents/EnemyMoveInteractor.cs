@@ -6,6 +6,13 @@ namespace Enemy.Agents
 {
     public sealed class EnemyMoveInteractor : MonoBehaviour, IFixedUpdatable
     {
+        [SerializeField] private AttackPosition _attackPosition;
+
+        public AttackPosition AttackPosition {
+            get => _attackPosition;
+            set => _attackPosition = value;
+        }
+
         public bool IsReached 
         {
             get;
@@ -18,7 +25,7 @@ namespace Enemy.Agents
         
         private void Awake()
         {
-            _moveComponent =  GetComponent<MoveComponent>();
+            _moveComponent = GetComponent<MoveComponent>();
         }
 
         public void SetDestination(Vector2 endPoint)

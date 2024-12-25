@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Components;
 using Enemy.Agents;
@@ -8,53 +9,61 @@ namespace Enemy
     public sealed class EnemyPool : MonoBehaviour
     {
         [Header("Spawn")]
-        [SerializeField] private EnemyPositionsProvider _enemyPositionsProvider;
-        
-        [SerializeField] private HitPointsComponent _character;
-        
-        [SerializeField] private Transform _worldTransform;
+        [SerializeField] private EnemyManager _enemyManager;
         
         [Header("Pool")]
+        [SerializeField] private int _poolSize = 7;
         [SerializeField] private Transform _container;
 
-        [SerializeField] private GameObject _prefab;
+        private readonly Queue<GameObject> _enemyPoolLocal = new ();
+        private readonly HashSet<GameObject> _activeEnemies = new ();
+        
+        private bool _isRunning = true;
 
-        private readonly Queue<GameObject> _enemyPool = new ();
+        public  Queue<GameObject> EnemyPoolLocal => _enemyPoolLocal;
+        public HashSet<GameObject> ActiveEnemies => _activeEnemies;
         
         private void Awake()
         {
-            for (int i = 0; i < 7; i++)
+            InitPool();
+        }
+        
+        private IEnumerator Start()
+        {
+            while (_isRunning)
             {
-                GameObject enemy = Instantiate(_prefab, _container);
-                _enemyPool.Enqueue(enemy);
+                yield return new WaitForSeconds(1);
+            
+                GameObject enemy = _enemyManager.SpawnEnemy();
+                
+                if (enemy == null) continue;
+                
+                if (!_activeEnemies.Add(enemy)) continue;
+
+                _enemyManager.InitializeEnemiesComponents(enemy);
             }
         }
-
-        public GameObject SpawnEnemy()
+        
+        public void StopLoop()
         {
-            if (!_enemyPool.TryDequeue(out GameObject enemy))
+            _isRunning = false;
+        }
+
+        private void InitPool()
+        {
+            for (int i = 0; i < _poolSize; i++)
             {
-                return null;
+                GameObject enemy = _enemyManager.CreateEnemy(_container);
+                _enemyPoolLocal.Enqueue(enemy);
             }
-
-            enemy.transform.SetParent(_worldTransform);
-
-            Transform spawnPosition = _enemyPositionsProvider.RandomSpawnPosition();
-            enemy.transform.position = spawnPosition.position;
-            
-            Transform attackPosition = _enemyPositionsProvider.RandomAttackPosition();
-            enemy.GetComponent<EnemyMoveInteractor>().SetDestination(attackPosition.position);
-
-            enemy.GetComponent<EnemyAttackInteractor>().SetTarget(_character);
-            enemy.GetComponent<EnemyWeapon>().SetTarget(_character);
-            
-            return enemy;
         }
 
         public void SendEnemyToPool(GameObject enemy)
         {
             enemy.transform.SetParent(_container);
-            _enemyPool.Enqueue(enemy);
+            _enemyPoolLocal.Enqueue(enemy);
+            
+            enemy.GetComponent<EnemyMoveInteractor>().AttackPosition._isNotEmpty = false;
             
             enemy.GetComponent<HitPointsComponent>().ResetHitPoints();
         }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Infrastructure;
 using Infrastructure.DI;
+using Input;
+using Level;
 using UI.Infrastructure;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +13,8 @@ namespace GameManager
     public class GameInstaller : MonoBehaviour
     {
         [SerializeField] private CharacterController _character;
+        [SerializeField] private InputManager _inputManager;
+        [SerializeField] private LevelBounds _levelBounds;
 
         private InGameServiceLocator _serviceLocator;
         private InGameDependencyInjector _dependencyInjector;
@@ -21,6 +25,8 @@ namespace GameManager
             _dependencyInjector = new InGameDependencyInjector(_serviceLocator);
             
             _serviceLocator.AddService(typeof(CharacterController), _character);
+            _serviceLocator.AddService(typeof(InputManager), _inputManager);
+            _serviceLocator.AddService(typeof(LevelBounds), _levelBounds);
             
             InjectCommon();
             InjectLocal();

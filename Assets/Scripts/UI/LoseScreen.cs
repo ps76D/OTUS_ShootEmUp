@@ -18,8 +18,6 @@ namespace UI
         
         private GameStateMachine _gameStateMachine;
         
-        public static event Action OnReviveButtonClicked;
-
         public void Start()
         {            
             _gameStateMachine = _gameBootstrapper.Game.StateMachine;
@@ -32,8 +30,6 @@ namespace UI
         private void Revive()
         {
             _gameStateMachine.Enter<GameLoopState>();
-            
-            OnReviveButtonClicked?.Invoke();
 
             _uiManager.CloseScreen(this);
         }

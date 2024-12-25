@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Components;
+using Level;
 
 namespace Character
 {
@@ -26,6 +27,5 @@ namespace Character
         {
             OnCharacterDeath?.Invoke();
         }
-
     }
 }

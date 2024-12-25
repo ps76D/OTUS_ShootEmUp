@@ -368,6 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadingCurtain: {fileID: 729203458}
+  _commonCamera: {fileID: 704775725}
 --- !u!4 &1661662364
 Transform:
   m_ObjectHideFlags: 0
