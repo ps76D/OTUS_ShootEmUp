@@ -16,7 +16,7 @@ namespace Enemy.Agents
         public bool IsReached 
         {
             get;
-            private set;
+            set;
         }
 
         private MoveComponent _moveComponent;

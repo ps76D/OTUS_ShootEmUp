@@ -15,6 +15,8 @@ namespace Enemy
         
         [SerializeField] private HitPointsComponent _character;
         
+        public EnemyPositionsProvider EnemyPositionsProvider => _enemyPositionsProvider;
+        
         private void OnDestroyed(HitPointsComponent enemy)
         {
             if (!_enemyPool.ActiveEnemies.Remove(enemy.gameObject)) return;

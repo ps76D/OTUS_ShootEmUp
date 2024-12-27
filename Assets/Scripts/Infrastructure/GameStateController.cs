@@ -11,8 +11,11 @@ namespace Infrastructure
         [InjectCustom]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
-        [InjectIEnumerable]
-        private IEnumerable<IGameStateListener> _gameStateListeners;
+        /*[InjectIEnumerable]
+        private IEnumerable<IGameStateListener> _gameStateListeners;*/
+        
+        [InjectIEnumerableLocal]
+        private IEnumerable<IGameStateListener> _gameStateListenersLocal;
 
         private GameStateMachine _gameStateMachine;
 
@@ -41,18 +44,34 @@ namespace Infrastructure
 
         private void StartGame()
         {
-            foreach (var listener in _gameStateListeners)
+            /*foreach (var listener in _gameStateListenersLocal)
             {
                 if (listener is IStartGameListener currentListener)
                 {
                     currentListener.StartGame();
                 }
-            }
+            }*/
+            
+            /*foreach (var listener in _gameStateListeners)
+            {
+                if (listener is IStartGameListener currentListener)
+                {
+                    currentListener.StartGame();
+                }
+            }*/
         }
         
         private void InGame()
         {
-            foreach (var listener in _gameStateListeners)
+            /*foreach (var listener in _gameStateListeners)
+            {
+                if (listener is IInGameListener currentListener)
+                {
+                    currentListener.InGame();
+                }
+            }*/
+            
+            foreach (var listener in _gameStateListenersLocal)
             {
                 if (listener is IInGameListener currentListener)
                 {
@@ -63,24 +82,40 @@ namespace Infrastructure
 
         private void PauseGame()
         {
-            foreach (var listener in _gameStateListeners)
+            foreach (var listener in _gameStateListenersLocal)
             {
                 if (listener is IPauseGameListener currentListener)
                 {
                     currentListener.PauseGame();
                 }
             }
+            
+            /*foreach (var listener in _gameStateListeners)
+            {
+                if (listener is IPauseGameListener currentListener)
+                {
+                    currentListener.PauseGame();
+                }
+            }*/
         }
 
         private void FinishGame()
         {
-            foreach (var listener in _gameStateListeners)
+            foreach (var listener in _gameStateListenersLocal)
             {
                 if (listener is IFinishGameListener currentListener)
                 {
                     currentListener.FinishGame();
                 }
             }
+            
+            /*foreach (var listener in _gameStateListeners)
+            {
+                if (listener is IFinishGameListener currentListener)
+                {
+                    currentListener.FinishGame();
+                }
+            }*/
         }
     }
 }

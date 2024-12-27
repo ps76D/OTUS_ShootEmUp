@@ -15,7 +15,7 @@ namespace Components
 		private BulletManager _bulletManager;
 
 		private HitPointsComponent _weaponTarget;
-
+		
 		private void Awake()
 		{
 			_bulletManager = FindObjectOfType<BulletManager>();

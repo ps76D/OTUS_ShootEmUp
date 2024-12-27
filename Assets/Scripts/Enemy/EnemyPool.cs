@@ -63,8 +63,18 @@ namespace Enemy
             enemy.transform.SetParent(_container);
             _enemyPoolLocal.Enqueue(enemy);
             
-            enemy.GetComponent<EnemyMoveInteractor>().AttackPosition._isNotEmpty = false;
+            EnemyMoveInteractor enemyMoveInteractor = enemy.GetComponent<EnemyMoveInteractor>();
             
+            enemyMoveInteractor.AttackPosition._isNotEmpty = false;
+
+
+            AttackPosition attackPosition = _enemyManager.EnemyPositionsProvider.RandomAttackPosition();
+            enemyMoveInteractor.AttackPosition = attackPosition;
+
+
+            enemyMoveInteractor.IsReached = false;
+
+
             enemy.GetComponent<HitPointsComponent>().ResetHitPoints();
         }
     }

@@ -16,4 +16,9 @@ namespace Infrastructure.DI
     {
 
     }
+    
+    public class InjectIEnumerableLocalAttribute : Attribute
+    {
+
+    }
 }

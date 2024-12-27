@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Infrastructure;
 using Infrastructure.DI;
+using Infrastructure.Listeners;
 using Input;
 using Level;
 using UI.Infrastructure;
@@ -18,6 +19,9 @@ namespace GameManager
 
         private InGameServiceLocator _serviceLocator;
         private InGameDependencyInjector _dependencyInjector;
+        private MonoBehaviour[] _allMonoBehaviours;
+        
+        private IGameStateListener[] _gameStateListeners;
 
         private void Awake()
         {
@@ -27,28 +31,70 @@ namespace GameManager
             _serviceLocator.AddService(typeof(CharacterController), _character);
             _serviceLocator.AddService(typeof(InputManager), _inputManager);
             _serviceLocator.AddService(typeof(LevelBounds), _levelBounds);
+
+            _serviceLocator.AddListeners<IGameStateListener>(GetAllGameStateListeners());
+            
+            _allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             
             InjectCommon();
             InjectLocal();
         }
         
+        private IEnumerable<IGameStateListener> GetAllGameStateListeners()
+        {
+            if (_gameStateListeners != null) return _gameStateListeners;
+            _gameStateListeners = FindObjectsOfInterface<IGameStateListener>();
+            return _gameStateListeners;
+        }
+        
+        private T[] FindObjectsOfInterface<T>() where T : class
+        {
+            var monoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
+            int capacity = 0;
+
+            for (int i = monoBehaviours.Length - 1; i >= 0; i--)
+            {
+                MonoBehaviour mb = monoBehaviours[i];
+                if (mb is T)
+                {
+                    capacity++;
+                }
+            }
+
+            var result = new T[capacity];
+            int index = 0;
+
+            for (int i = monoBehaviours.Length - 1; i >= 0; i--)
+            {
+                MonoBehaviour mb = monoBehaviours[i];
+                if (mb is T t)
+                {
+                    result[index++] = t;
+                }
+            }
+
+            return result;
+        }
+        
         private void InjectLocal()
         {
-            var allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
-            
-            foreach(MonoBehaviour monoBehaviour in allMonoBehaviours)
+            foreach(MonoBehaviour monoBehaviour in _allMonoBehaviours)
             {
                 _dependencyInjector.InjectLocalObject(monoBehaviour);
             }
             
             Debug.Log("Inject Game Objects");
+            
+            foreach(MonoBehaviour monoBehaviour in _allMonoBehaviours)
+            {
+                _dependencyInjector.InjectLocal(monoBehaviour);
+            }
+            Debug.Log("Inject Game Listeners");
         }
         
         private void InjectCommon()
         {
-            var allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
-            
-            foreach(MonoBehaviour monoBehaviour in allMonoBehaviours)
+            foreach(MonoBehaviour monoBehaviour in _allMonoBehaviours)
             {
                 DependencyInjector.InjectObject(monoBehaviour);
             }

@@ -49,11 +49,15 @@ namespace Components
         {
             Vector3 nextPosition = _rigidbody2D.position + vector * _speed;
 
-            if (nextPosition.x <= _levelBounds.GetLeftBorder().position.x 
-                ||  nextPosition.x >= _levelBounds.GetRightBorder().position.x )
+            if (_isPlayer)
             {
-                nextPosition = _rigidbody2D.position;
+                if (nextPosition.x <= _levelBounds.GetLeftBorder().position.x 
+                    ||  nextPosition.x >= _levelBounds.GetRightBorder().position.x )
+                {
+                    nextPosition = _rigidbody2D.position;
+                }
             }
+
             _rigidbody2D.MovePosition(nextPosition);
         }
     }

@@ -21,7 +21,7 @@ namespace Enemy
             return pos;
         }
 
-        private T RandomTransform<T>(List<T> transforms) where T : ScenePosition
+        private T RandomTransform<T>(IReadOnlyList<T> transforms) where T : ScenePosition
         {
             int index = Random.Range(0, transforms.Count);
             return transforms[index];
