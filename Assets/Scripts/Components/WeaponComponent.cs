@@ -1,3 +1,4 @@
+using Infrastructure.DI;
 using Input;
 using UnityEngine;
 
@@ -5,18 +6,21 @@ namespace Components
 {
     public sealed class WeaponComponent : Weapon
     {
-        override protected private void OnEnable()
+        [InjectCustomLocal]
+        private InputManager _inputManager;
+        
+        override protected private void Start()
         {
-            base.OnEnable();
+            base.Start();
             
-            InputManager.OnPlayerFire += Fire;
+            _inputManager.OnPlayerFire += Fire;
         }
 
         override protected private void OnDisable()
         { 
             base.OnDisable();
             
-            InputManager.OnPlayerFire -= Fire;
+            _inputManager.OnPlayerFire -= Fire;
         }
 
         public override Vector2 CalcBulletVelocity()

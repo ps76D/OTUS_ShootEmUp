@@ -17,7 +17,7 @@ namespace Components
         {
             ResetHitPoints();
         }
-
+        
         public bool IsHitPointsExists() {
             return _hitPoints > 0;
         }

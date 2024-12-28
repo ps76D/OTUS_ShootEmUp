@@ -1,14 +1,22 @@
 using Components;
+using Infrastructure.CommonInterfaces;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyMoveInteractor : MonoBehaviour
+    public sealed class EnemyMoveInteractor : MonoBehaviour, IFixedUpdatable
     {
+        [SerializeField] private AttackPosition _attackPosition;
+
+        public AttackPosition AttackPosition {
+            get => _attackPosition;
+            set => _attackPosition = value;
+        }
+
         public bool IsReached 
         {
             get;
-            private set;
+            set;
         }
 
         private MoveComponent _moveComponent;
@@ -17,7 +25,7 @@ namespace Enemy.Agents
         
         private void Awake()
         {
-            _moveComponent =  GetComponent<MoveComponent>();
+            _moveComponent = GetComponent<MoveComponent>();
         }
 
         public void SetDestination(Vector2 endPoint)
@@ -26,7 +34,7 @@ namespace Enemy.Agents
             IsReached = false;
         }
 
-        private void FixedUpdate()
+        public void CustomFixedUpdate()
         {
             MoveEnemyOnPosition();
         }

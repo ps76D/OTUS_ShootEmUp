@@ -32,7 +32,7 @@ namespace Infrastructure
       
       onLoadStart?.Invoke();
 
-      yield return new WaitForSeconds(1f);
+      yield return new WaitForSecondsRealtime(1f);
       
       AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Single);
 
@@ -46,7 +46,7 @@ namespace Infrastructure
     {
       onLoadStart?.Invoke();
       
-      yield return new WaitForSeconds(1f);
+      yield return new WaitForSecondsRealtime(1f);
       
       AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
 

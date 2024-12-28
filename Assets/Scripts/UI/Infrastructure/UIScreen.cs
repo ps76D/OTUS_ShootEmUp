@@ -8,11 +8,5 @@ namespace UI.Infrastructure
     {
         [InjectCustom]
         [SerializeField] protected UIManager _uiManager;
-        
-        /*private void Start()
-        {
-            this._uiManager = ServiceLocator.GetListeners<IUIScreen>();
-        }*/
-
     }
 }

@@ -22,14 +22,11 @@ namespace Infrastructure
 
     public void Exit()
     {
-      /*_loadingCurtain.Hide();*/
     }
 
     public void Enter()
     {
       OnLoseState?.Invoke();
-
-      /*TimeManager.StopTime(true);*/
       
       Debug.Log("Enter LoseState");
     }

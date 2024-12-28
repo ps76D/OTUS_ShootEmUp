@@ -15,12 +15,16 @@ namespace Components
 		private BulletManager _bulletManager;
 
 		private HitPointsComponent _weaponTarget;
-
+		
 		private void Awake()
 		{
 			_bulletManager = FindObjectOfType<BulletManager>();
 		}
 
+		protected virtual private void Start()
+		{
+		}
+		
 		protected virtual private void OnEnable()
 		{
 			OnWeaponFire += _bulletManager.OnFlyBullet;
@@ -33,7 +37,7 @@ namespace Components
 		
 		public abstract Vector2 CalcBulletVelocity();
 
-		public virtual void Fire()
+		public void Fire()
 		{
 			OnWeaponFire?.Invoke(this);
 		}

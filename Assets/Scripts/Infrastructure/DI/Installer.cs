@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GameManager.Listeners;
+using Infrastructure.CommonInterfaces;
 using Infrastructure.Listeners;
 using UI;
 using UI.Infrastructure;
 using UnityEngine;
+using CharacterController = Character.CharacterController;
 
 namespace Infrastructure.DI
 {
@@ -11,9 +14,9 @@ namespace Infrastructure.DI
     {
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private GameBootstrapper _gameBootstrapper;
-        
-        private IUpdatableListener[] _updatableItems;
+
         private IGameStateListener[] _gameStateListeners;
+        private IGameListener[] _gameListeners;
 
         private void Awake()
         {
@@ -25,12 +28,8 @@ namespace Infrastructure.DI
             ServiceLocator.AddService(typeof(GameBootstrapper), _gameBootstrapper);
             ServiceLocator.AddService(typeof(UIManager), _uiManager);
             
-            // _instance = this;
-            /*ServiceLocator.AddListeners<IUpdatableListener>(_instance.GetAllUpdatableItems());*/
-            
             ServiceLocator.AddListeners<IGameStateListener>(GetAllGameStateListeners());
-            
-            /*ServiceLocator.AddListeners<IUserInputListener>(instance.GetAllUserInputListeners());*/
+            ServiceLocator.AddListeners<IGameListener>(GetAllInGameListeners());
 
             Inject();
         }
@@ -40,6 +39,13 @@ namespace Infrastructure.DI
             if (_gameStateListeners != null) return _gameStateListeners;
             _gameStateListeners = FindObjectsOfInterface<IGameStateListener>();
             return _gameStateListeners;
+        }
+        
+        private IEnumerable<IGameListener> GetAllInGameListeners()
+        {
+            if (_gameListeners != null) return _gameListeners;
+            _gameListeners = FindObjectsOfInterface<IGameListener>();
+            return _gameListeners;
         }
 
         private void Inject()
@@ -61,7 +67,7 @@ namespace Infrastructure.DI
 
         private T[] FindObjectsOfInterface<T>() where T : class
         {
-            var monoBehaviours = FindObjectsOfType<MonoBehaviour>();
+            var monoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             int capacity = 0;
 
             for (int i = monoBehaviours.Length - 1; i >= 0; i--)
@@ -87,6 +93,5 @@ namespace Infrastructure.DI
 
             return result;
         }
-
     }
 }

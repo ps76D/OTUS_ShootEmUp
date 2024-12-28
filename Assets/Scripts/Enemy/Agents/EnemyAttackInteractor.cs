@@ -1,15 +1,16 @@
 using Components;
+using Infrastructure.CommonInterfaces;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyAttackInteractor : MonoBehaviour
+    public sealed class EnemyAttackInteractor : MonoBehaviour, IFixedUpdatable
     {
         [SerializeField] private float _attackCooldown;
 
         private EnemyMoveInteractor _enemyMoveInteractor;
         
-        private EnemyWeapon _enemyWeapon;
+        [SerializeField] private EnemyWeapon _enemyWeapon;
         
         private HitPointsComponent _attackTarget;
 
@@ -31,29 +32,29 @@ namespace Enemy.Agents
             _currentTime = _attackCooldown;
         }
 
-        private void FixedUpdate()
+        public void CustomFixedUpdate()
         {
-            if (!CheckEnemyIsOnPosition()) 
+            if (!CheckEnemyIsOnPosition())
             {
                 return;
             }
-            
-            if (!CheckPlayerIsAlive()) 
+
+            if (!CheckPlayerIsAlive())
             {
-                return;  
+                return;
             }
 
             EnemyFireWithCooldown();
         }
-
+        
         private bool CheckEnemyIsOnPosition()
         {
-            return _enemyMoveInteractor.IsReached;
+            return _enemyMoveInteractor && _enemyMoveInteractor.IsReached;
         }
         
         private bool CheckPlayerIsAlive()
         {
-            return _attackTarget.IsHitPointsExists();
+            return _attackTarget && _attackTarget.IsHitPointsExists();
         }
         
         private void EnemyFireWithCooldown()
@@ -61,7 +62,12 @@ namespace Enemy.Agents
             _currentTime -= Time.fixedDeltaTime;
 			
             if (!(_currentTime <= 0)) return;
-            _enemyWeapon.Fire();
+
+            if (_enemyWeapon)
+            {
+                _enemyWeapon.Fire();
+            }
+
 			
             _currentTime += _attackCooldown;
         }

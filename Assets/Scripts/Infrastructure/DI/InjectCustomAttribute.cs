@@ -7,7 +7,17 @@ namespace Infrastructure.DI
 
     }
     
+    public class InjectCustomLocalAttribute : Attribute
+    {
+
+    }
+    
     public class InjectIEnumerableAttribute : Attribute
+    {
+
+    }
+    
+    public class InjectIEnumerableLocalAttribute : Attribute
     {
 
     }

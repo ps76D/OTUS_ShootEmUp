@@ -1,27 +1,46 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Enemy
 {
     public sealed class EnemyPositionsProvider : MonoBehaviour
     {
-        [SerializeField] private Transform[] _spawnPositions;
+        [SerializeField] private List<SpawnPosition> _spawnPositions;
         
-        [SerializeField] private Transform[] _attackPositions;
+        [SerializeField] private List<AttackPosition> _attackPositions;
 
-        public Transform RandomSpawnPosition()
+        public SpawnPosition RandomSpawnPosition()
         {
-            return RandomTransform(_spawnPositions);
+            SpawnPosition pos = RandomTransform(_spawnPositions);
+            return pos;
         }
 
-        public Transform RandomAttackPosition()
+        public AttackPosition RandomAttackPosition()
         {
-            return RandomTransform(_attackPositions);
+            AttackPosition pos = RandomEmptyPosition();
+            return pos;
         }
 
-        private Transform RandomTransform(Transform[] transforms)
+        private T RandomTransform<T>(IReadOnlyList<T> transforms) where T : ScenePosition
         {
-            int index = Random.Range(0, transforms.Length);
+            int index = Random.Range(0, transforms.Count);
             return transforms[index];
+        }
+
+        private AttackPosition RandomEmptyPosition()
+        {
+            var sortedEmptyPositions = new List<AttackPosition>();
+
+            for (int index = _attackPositions.Count - 1; index >= 0; index--)
+            {
+                AttackPosition position = _attackPositions[index];
+                if (!position._isNotEmpty)
+                {
+                    sortedEmptyPositions.Add(position);
+                }
+            }
+
+            return RandomTransform(sortedEmptyPositions);
         }
     }
 }

@@ -1,17 +1,20 @@
 using System;
+using Infrastructure.CommonInterfaces;
+using Level;
 using UnityEngine;
+
 
 namespace Input
 {
-    public sealed class InputManager : MonoBehaviour
+    public sealed class InputManager : MonoBehaviour, IUpdatable
     {
         [SerializeField] private float _moveStep = 1.0f;
         
-        public static event Action OnPlayerFire;
+        public event Action OnPlayerFire;
         
-        public static event Action<float> OnPlayerMove;
-
-        private void Update()
+        public event Action<float> OnPlayerMove;
+        
+        public void CustomUpdate()
         {
             if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
             {
@@ -20,11 +23,11 @@ namespace Input
 
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
             {
-                OnPlayerMove?.Invoke(-this._moveStep);
+                OnPlayerMove?.Invoke(-_moveStep);
             }
             else if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
             {
-                OnPlayerMove?.Invoke(this._moveStep);
+                OnPlayerMove?.Invoke(_moveStep);
             }
             else
             {

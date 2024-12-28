@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Components;
+using GameManager.Listeners;
 using Infrastructure;
 using Infrastructure.DI;
 using Input;
@@ -14,38 +16,30 @@ namespace GameManager
         [InjectCustom]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
-        private CharacterController _characterController;
+        [InjectCustomLocal]
+        [SerializeField] private CharacterController _characterController;
         
-        private InputManager _inputManager;
+        [InjectCustomLocal]
+        [SerializeField] private InputManager _inputManager;
 
         private GameStateMachine _gameStateMachine;
-        
-        private void Awake()
-        {
-            _characterController = FindObjectOfType<CharacterController>();
-            _inputManager = FindObjectOfType<InputManager>();
-        }
-
-        private void OnEnable()
-        {
-            _characterController.OnCharacterDeath += FinishGame;
-            
-            //TODO Переписать кусок ниже
-            UI.LoseScreen.OnReviveButtonClicked += Revive;
-        }
-        
-        private void OnDisable()
-        {
-            _characterController.OnCharacterDeath -= FinishGame;
-            
-            //TODO Переписать кусок ниже
-            UI.LoseScreen.OnReviveButtonClicked -= Revive;
-        }
 
         private void Start()
         {
             _gameStateMachine = _gameBootstrapper.Game.StateMachine;
+            
+            _gameStateMachine.GetState<GameLoopState>().OnGameLoopState += Revive;
+            
+            _characterController.OnCharacterDeath += FinishGame;
+            
             Debug.Log("GameManager Started");
+        }
+
+        private void OnDisable()
+        {
+            _gameStateMachine.GetState<GameLoopState>().OnGameLoopState -= Revive;
+            
+            _characterController.OnCharacterDeath -= FinishGame;
         }
 
         private void Revive()
@@ -57,8 +51,6 @@ namespace GameManager
             character.Revive();
             
             EnablePlayerInput(true);
-
-            /*TimeManager.StopTime(false);*/
         }
 
         private void FinishGame()
