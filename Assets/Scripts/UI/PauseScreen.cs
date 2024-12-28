@@ -4,12 +4,13 @@ using Infrastructure.DI;
 using UI.Infrastructure;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
     public sealed class PauseScreen : UIScreen
     {
-        [InjectCustom]
+        [Inject]
         private GameBootstrapper _gameBootstrapper;
         
         [SerializeField] private Button _resumeButton;

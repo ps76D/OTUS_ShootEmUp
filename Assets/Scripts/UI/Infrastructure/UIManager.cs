@@ -5,13 +5,12 @@ using Infrastructure.Listeners;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
-using CharacterController = Character.CharacterController;
 
 namespace UI.Infrastructure
 {
     public sealed class UIManager : MonoBehaviour, IInGameListener, IResumeGameListener
     {
-        [InjectCustom]
+        [Inject]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         [SerializeField] private MainMenuScreen _mainMenuScreen;

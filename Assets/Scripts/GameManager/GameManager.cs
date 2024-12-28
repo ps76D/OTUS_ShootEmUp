@@ -13,13 +13,13 @@ namespace GameManager
 {
     public sealed class GameManager : MonoBehaviour
     {
-        [InjectCustom]
+        [Inject]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
-        [InjectCustomLocal]
+        [Inject]
         [SerializeField] private CharacterController _characterController;
         
-        [InjectCustomLocal]
+        [Inject]
         [SerializeField] private InputManager _inputManager;
 
         private GameStateMachine _gameStateMachine;

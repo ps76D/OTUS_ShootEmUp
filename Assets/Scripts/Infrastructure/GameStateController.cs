@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Infrastructure.DI;
 using Infrastructure.Listeners;
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure
 {
     public class GameStateController : MonoBehaviour
     {
-        [InjectCustom]
+        [Inject]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         /*[InjectIEnumerable]
@@ -23,7 +24,7 @@ namespace Infrastructure
         {
             DontDestroyOnLoad(this);
                 
-            _gameBootstrapper = FindObjectOfType<GameBootstrapper>();
+            /*_gameBootstrapper = FindObjectOfType<GameBootstrapper>();*/
         }
         
         private void OnEnable()

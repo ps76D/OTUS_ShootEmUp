@@ -10,7 +10,7 @@ namespace UI
 {
     public sealed class MainMenuScreen : UIScreen
     {
-        [InjectCustom]
+        [Inject]
         private GameBootstrapper _gameBootstrapper;
 
         [SerializeField] private Button _startButton;

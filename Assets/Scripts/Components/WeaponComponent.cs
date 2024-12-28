@@ -1,12 +1,13 @@
 using Infrastructure.DI;
 using Input;
 using UnityEngine;
+using Zenject;
 
 namespace Components
 {
     public sealed class WeaponComponent : Weapon
     {
-        [InjectCustomLocal]
+        [Inject]
         private InputManager _inputManager;
         
         override protected private void Start()

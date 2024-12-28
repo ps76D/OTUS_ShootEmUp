@@ -7,16 +7,17 @@ using TMPro;
 using UI.Infrastructure;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 using CharacterController = Character.CharacterController;
 
 namespace UI
 {
     public sealed class HUDScreen : UIScreen
     {
-        [InjectCustom]
+        [Inject]
         private GameBootstrapper _gameBootstrapper;
         
-        [InjectCustomLocal]
+        [InjectOptional]
         [SerializeField] private CharacterController _characterController;
         
         [SerializeField] private TMP_Text _hitPointsCount;

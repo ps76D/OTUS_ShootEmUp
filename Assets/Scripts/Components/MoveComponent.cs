@@ -2,15 +2,16 @@ using Infrastructure.DI;
 using Input;
 using Level;
 using UnityEngine;
+using Zenject;
 
 namespace Components
 {
     public sealed class MoveComponent : MonoBehaviour
     {
-        [InjectCustomLocal]
+        [Inject]
         private InputManager _inputManager;
         
-        [InjectCustomLocal]
+        [Inject]
         [SerializeField] private LevelBounds _levelBounds;
         
         [SerializeField] private Rigidbody2D _rigidbody2D;
