@@ -7,16 +7,24 @@ using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class BulletManager : MonoBehaviour
+    public sealed class BulletManager
     {
-        [SerializeField] private Bullet _prefab;
+        private readonly Bullet _bulletPrefab;
 
-        [SerializeField] private Transform _worldTransform;
+        private readonly Transform _worldTransform;
         
-        [SerializeField] private BulletPool _bulletPool;
+        private readonly BulletPool _bulletPool;
         
-        [SerializeField] private UpdateController _updateController;
+        private readonly UpdateController _updateController;
 
+        public BulletManager(Bullet bullet, BulletPool bulletPool, Transform worldTransform, UpdateController updateController)
+        {
+            _bulletPrefab = bullet;
+            _bulletPool = bulletPool;
+            _worldTransform = worldTransform;
+            _updateController = updateController;
+        }
+        
         public void OnFlyBullet(Weapon weapon)
         {
             BulletConfig config = weapon.GetBulletConfig();
@@ -39,7 +47,7 @@ namespace Bullets
             }
             else
             {
-                bullet = Instantiate(_prefab, _worldTransform);
+                bullet = CreateInstance(_bulletPrefab.gameObject, _worldTransform).GetComponent<Bullet>();
             }
 
             bullet.UpdateBullet(bulletArgs);
@@ -49,11 +57,16 @@ namespace Bullets
 
         public Bullet CreateBullet(Transform container)
         {
-            Bullet bullet = Instantiate(_prefab, container);
+            Bullet bullet = CreateInstance(_bulletPrefab.gameObject, container).GetComponent<Bullet>();
             
             _updateController.PoolFixedUpdatable.Add(bullet.GetComponent<Bullet>());
 
             return bullet;
+        }
+
+        private GameObject CreateInstance(GameObject prefab, Transform container)
+        {
+            return Object.Instantiate(prefab, container);
         }
     }
 }

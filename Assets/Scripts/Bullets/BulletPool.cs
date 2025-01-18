@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Infrastructure.CommonInterfaces;
 using Level;
 using UnityEngine;
+using Zenject;
 
 namespace Bullets
 {
     public class BulletPool : MonoBehaviour, IFixedUpdatable
     {
-        [SerializeField] private BulletManager _bulletManager;
+        [Inject]
+        private BulletManager _bulletManager;
         
         [SerializeField] private int _initialCount = 50;
         [SerializeField] private Transform _container;

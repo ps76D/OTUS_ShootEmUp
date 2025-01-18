@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Components;
@@ -5,39 +6,47 @@ using Enemy.Agents;
 using Infrastructure;
 using Infrastructure.CommonInterfaces;
 using UnityEngine;
+using Zenject;
 
 namespace Enemy
 {
-    public sealed class EnemyManager : MonoBehaviour
+    public sealed class EnemyManager
     {
-        [SerializeField] private EnemyPool _enemyPool;
-        [SerializeField] private GameObject _prefab;
-        [SerializeField] private Transform _worldTransform;
-        [SerializeField] private EnemyPositionsProvider _enemyPositionsProvider;
-        
-        [SerializeField] private HitPointsComponent _character;
-        
-        [SerializeField] private UpdateController _updateController;
-        
+        [Inject] private DiContainer _container;
+
+        [Inject]
+        private UpdateController _updateController;
+
+        private readonly EnemyPool _enemyPool;
+
+        private readonly GameObject _prefab;
+
+        private readonly Transform _worldTransform;
+
+        private readonly EnemyPositionsProvider _enemyPositionsProvider;
+
+        private readonly Transform _character;
+
         public EnemyPositionsProvider EnemyPositionsProvider => _enemyPositionsProvider;
+
+        public EnemyManager(EnemyPool enemyPool, GameObject prefab, Transform worldTransform, EnemyPositionsProvider enemyPositionsProvider, Transform target)
+        {
+            _enemyPool = enemyPool;
+            _prefab = prefab;
+            _worldTransform = worldTransform;
+            _enemyPositionsProvider = enemyPositionsProvider;
+            _character = target;
+        }
         
-        
-        private void OnDestroyed(HitPointsComponent enemy)
+        public void OnDestroyed(HitPointsComponent enemy)
         {
             if (!_enemyPool.ActiveEnemies.Remove(enemy.gameObject)) return;
-            enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty -= OnDestroyed;
-
             _enemyPool.SendEnemyToPool(enemy.gameObject);
-        }
-
-        public void InitializeEnemiesComponents(GameObject enemy)
-        {
-            enemy.GetComponent<HitPointsComponent>().OnHitPointsEmpty += OnDestroyed;
         }
         
         public GameObject CreateEnemy(Transform container)
         {
-            GameObject enemy = Instantiate(_prefab, container);
+            GameObject enemy = _container.InstantiatePrefab(_prefab, container);
             
             _updateController.PoolFixedUpdatable.Add(enemy.GetComponent<EnemyMoveInteractor>());
             _updateController.PoolFixedUpdatable.Add(enemy.GetComponent<EnemyAttackInteractor>());
@@ -54,12 +63,12 @@ namespace Enemy
 
             enemy.transform.SetParent(_worldTransform);
 
-            var spawnPosition = _enemyPositionsProvider.RandomSpawnPosition();
+            SpawnPosition spawnPosition = _enemyPositionsProvider.RandomSpawnPosition();
             enemy.transform.position = spawnPosition.transform.position;
             
-            var attackPosition = _enemyPositionsProvider.RandomAttackPosition();
+            AttackPosition attackPosition = _enemyPositionsProvider.RandomAttackPosition();
 
-            var enemyMoveInteractor = enemy.GetComponent<EnemyMoveInteractor>();
+            EnemyMoveInteractor enemyMoveInteractor = enemy.GetComponent<EnemyMoveInteractor>();
             enemyMoveInteractor.AttackPosition = attackPosition;
             enemyMoveInteractor.AttackPosition._isNotEmpty = true;
             enemyMoveInteractor.SetDestination(attackPosition.transform.position);

@@ -4,9 +4,10 @@ using Infrastructure.CommonInterfaces;
 
 namespace Level
 {
-    public sealed class LevelBackgroundMover : MonoBehaviour, IFixedUpdatable
+    public sealed class LevelBackgroundMover : IFixedUpdatable
     {
-        [SerializeField] private BackgroundMovementConfig _config;
+        private readonly BackgroundConfig _config;
+        private readonly LevelBounds _levelBounds;
 
         private float _startPositionY;
 
@@ -19,12 +20,15 @@ namespace Level
         private Vector3 _startPositionVector;
 
         private Vector3 _positionDeltaVector;
-        
-        private void Awake()
+
+        public LevelBackgroundMover(BackgroundConfig config, LevelBounds levelBounds)
         {
+            _config = config;
+            _levelBounds = levelBounds;
+            
             InitializeBackground();
         }
-        
+
         public void CustomFixedUpdate()
         {
             MoveBackground();
@@ -36,7 +40,8 @@ namespace Level
             _endPositionY = _config._endPositionY;
             _movingSpeedY = _config._movingSpeedY;
             
-            _backTransform = transform;
+            _backTransform = _levelBounds.BackTransform;
+            
             Vector3 position = _backTransform.position;
             
             _startPositionVector = position;
@@ -62,20 +67,6 @@ namespace Level
             float positionYDelta = _movingSpeedY * Time.fixedDeltaTime;
             
             _positionDeltaVector.y = positionYDelta;
-        }
-
-
-        [Serializable]
-        public sealed class BackgroundMovementConfig
-        {
-            [SerializeField]
-            public float _startPositionY;
-
-            [SerializeField]
-            public float _endPositionY;
-
-            [SerializeField]
-            public float _movingSpeedY;
         }
     }
 }

@@ -1,10 +1,15 @@
 using System;
+using Enemy;
 using UnityEngine;
+using Zenject;
 
 namespace Components
 {
     public sealed class HitPointsComponent : MonoBehaviour
     {
+        [Inject]
+        [SerializeField] private EnemyManager _enemyManager;
+            
         [SerializeField] private int _startHitPoints;
         [SerializeField] private Collider2D _collider;
 
@@ -13,11 +18,18 @@ namespace Components
         public event Action<HitPointsComponent> OnHitPointsEmpty;
         public event Action<HitPointsComponent> OnHitPointsChanged;
 
-        private void Awake()
+        private void Start()
         {
+            OnHitPointsEmpty += _enemyManager.OnDestroyed;
+            
             ResetHitPoints();
         }
-        
+
+        private void OnDestroy()
+        {
+            OnHitPointsEmpty -= _enemyManager.OnDestroyed;
+        }
+
         public bool IsHitPointsExists() {
             return _hitPoints > 0;
         }

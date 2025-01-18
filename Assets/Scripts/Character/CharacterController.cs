@@ -5,27 +5,29 @@ using Level;
 
 namespace Character
 {
-    public sealed class CharacterController : MonoBehaviour
+    public sealed class CharacterController : IDisposable
     {
-        [SerializeField] private HitPointsComponent _character;
+        public HitPointsComponent Character {
+            get;
+        }
 
-        public HitPointsComponent Character => _character;
+        public CharacterController(HitPointsComponent hitPointsComponent)
+        {
+            Character = hitPointsComponent;
+            
+            Character.OnHitPointsEmpty += CharacterDeath;
+        }
 
         public event Action OnCharacterDeath;
-
-        private void OnEnable()
-        {
-            _character.OnHitPointsEmpty += CharacterDeath;
-        }
-
-        private void OnDisable()
-        {
-            _character.OnHitPointsEmpty -= CharacterDeath;
-        }
-
+        
         private void CharacterDeath(HitPointsComponent _)
         {
             OnCharacterDeath?.Invoke();
+        }
+
+        public void Dispose()
+        {
+            Character.OnHitPointsEmpty -= CharacterDeath;
         }
     }
 }

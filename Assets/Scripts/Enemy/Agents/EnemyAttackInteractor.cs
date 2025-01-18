@@ -12,7 +12,7 @@ namespace Enemy.Agents
         
         [SerializeField] private EnemyWeapon _enemyWeapon;
         
-        private HitPointsComponent _attackTarget;
+        private Transform _attackTarget;
 
         private float _currentTime;
 
@@ -22,7 +22,7 @@ namespace Enemy.Agents
             _enemyWeapon = GetComponent<EnemyWeapon>();
         }
 
-        public void SetTarget(HitPointsComponent target)
+        public void SetTarget(Transform target)
         {
             _attackTarget = target;
         }
@@ -54,7 +54,7 @@ namespace Enemy.Agents
         
         private bool CheckPlayerIsAlive()
         {
-            return _attackTarget && _attackTarget.IsHitPointsExists();
+            return _attackTarget && _attackTarget.GetComponent<HitPointsComponent>().IsHitPointsExists();
         }
         
         private void EnemyFireWithCooldown()

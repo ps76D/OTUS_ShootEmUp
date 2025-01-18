@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Bullets;
+using UnityEngine;
+using Zenject;
 
 namespace Components
 {

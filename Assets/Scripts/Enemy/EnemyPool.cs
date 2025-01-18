@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Components;
 using Enemy.Agents;
 using UnityEngine;
+using Zenject;
 
 namespace Enemy
 {
     public sealed class EnemyPool : MonoBehaviour
     {
-        [Header("Spawn")]
-        [SerializeField] private EnemyManager _enemyManager;
+        [Inject]
+        private EnemyManager _enemyManager;
         
         [Header("Pool")]
         [SerializeField] private int _poolSize = 7;
@@ -40,7 +41,7 @@ namespace Enemy
                 
                 if (!_activeEnemies.Add(enemy)) continue;
 
-                _enemyManager.InitializeEnemiesComponents(enemy);
+                /*_enemyManager.InitializeEnemiesComponents(enemy);*/
             }
         }
         

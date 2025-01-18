@@ -1,6 +1,7 @@
 ﻿using System;
 using Bullets;
 using UnityEngine;
+using Zenject;
 
 namespace Components
 {
@@ -12,14 +13,10 @@ namespace Components
 		
 		public event Action<Weapon> OnWeaponFire;
 		
+		[Inject]
 		private BulletManager _bulletManager;
 
-		private HitPointsComponent _weaponTarget;
-		
-		private void Awake()
-		{
-			_bulletManager = FindObjectOfType<BulletManager>();
-		}
+		private Transform _weaponTarget;
 
 		protected virtual private void Start()
 		{
@@ -42,7 +39,7 @@ namespace Components
 			OnWeaponFire?.Invoke(this);
 		}
 
-		public void SetTarget(HitPointsComponent target)
+		public void SetTarget(Transform target)
 		{
 			_weaponTarget = target;
 		}
@@ -62,7 +59,7 @@ namespace Components
 			return _firePoint.rotation;
 		}
 
-		protected private HitPointsComponent GetTarget()
+		protected private Transform GetTarget()
 		{
 			return _weaponTarget;
 		}
