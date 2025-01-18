@@ -13,10 +13,6 @@ namespace GameManager
 {
     public class GameInstaller : MonoBehaviour
     {
-        [SerializeField] private CharacterController _character;
-        [SerializeField] private InputManager _inputManager;
-        [SerializeField] private LevelBounds _levelBounds;
-
         private InGameServiceLocator _serviceLocator;
         private InGameDependencyInjector _dependencyInjector;
         private MonoBehaviour[] _allMonoBehaviours;
@@ -28,15 +24,10 @@ namespace GameManager
             _serviceLocator = new InGameServiceLocator();
             _dependencyInjector = new InGameDependencyInjector(_serviceLocator);
             
-            _serviceLocator.AddService(typeof(CharacterController), _character);
-            _serviceLocator.AddService(typeof(InputManager), _inputManager);
-            _serviceLocator.AddService(typeof(LevelBounds), _levelBounds);
-
             _serviceLocator.AddListeners<IGameStateListener>(GetAllGameStateListeners());
             
             _allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             
-            InjectCommon();
             InjectLocal();
         }
         
@@ -78,11 +69,6 @@ namespace GameManager
         
         private void InjectLocal()
         {
-            foreach(MonoBehaviour monoBehaviour in _allMonoBehaviours)
-            {
-                _dependencyInjector.InjectLocalObject(monoBehaviour);
-            }
-            
             Debug.Log("Inject Game Objects");
             
             foreach(MonoBehaviour monoBehaviour in _allMonoBehaviours)
@@ -90,16 +76,6 @@ namespace GameManager
                 _dependencyInjector.InjectLocal(monoBehaviour);
             }
             Debug.Log("Inject Game Listeners");
-        }
-        
-        private void InjectCommon()
-        {
-            foreach(MonoBehaviour monoBehaviour in _allMonoBehaviours)
-            {
-                DependencyInjector.InjectObject(monoBehaviour);
-            }
-            
-            Debug.Log("Inject Common Objects in Scene");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Level
         private Vector3 _startPositionVector;
 
         private Vector3 _positionDeltaVector;
-
+        
         private void Awake()
         {
             InitializeBackground();

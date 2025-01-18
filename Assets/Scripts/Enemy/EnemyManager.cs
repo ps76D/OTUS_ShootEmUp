@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Components;
 using Enemy.Agents;
+using Infrastructure;
+using Infrastructure.CommonInterfaces;
 using UnityEngine;
 
 namespace Enemy
@@ -15,7 +17,10 @@ namespace Enemy
         
         [SerializeField] private HitPointsComponent _character;
         
+        [SerializeField] private UpdateController _updateController;
+        
         public EnemyPositionsProvider EnemyPositionsProvider => _enemyPositionsProvider;
+        
         
         private void OnDestroyed(HitPointsComponent enemy)
         {
@@ -33,7 +38,10 @@ namespace Enemy
         public GameObject CreateEnemy(Transform container)
         {
             GameObject enemy = Instantiate(_prefab, container);
-
+            
+            _updateController.PoolFixedUpdatable.Add(enemy.GetComponent<EnemyMoveInteractor>());
+            _updateController.PoolFixedUpdatable.Add(enemy.GetComponent<EnemyAttackInteractor>());
+            
             return enemy;
         }
         

@@ -6,16 +6,24 @@ using UnityEngine;
 
 namespace Input
 {
-    public sealed class InputManager : MonoBehaviour, IUpdatable
+    public sealed class InputManager : IUpdatable
     {
-        [SerializeField] private float _moveStep = 1.0f;
+        private readonly float _moveStep;
         
+        public InputManager(InputConfig config)
+        {
+            _moveStep = config.MoveStep;
+        }
+
+        public bool IsActive = true;
         public event Action OnPlayerFire;
         
         public event Action<float> OnPlayerMove;
         
         public void CustomUpdate()
         {
+            if (!IsActive) return;
+            
             if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
             {
                 OnPlayerFire?.Invoke();

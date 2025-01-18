@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Components;
+using Infrastructure;
 using Infrastructure.CommonInterfaces;
 using Level;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Bullets
         [SerializeField] private Transform _worldTransform;
         
         [SerializeField] private BulletPool _bulletPool;
+        
+        [SerializeField] private UpdateController _updateController;
 
         public void OnFlyBullet(Weapon weapon)
         {
@@ -47,6 +50,8 @@ namespace Bullets
         public Bullet CreateBullet(Transform container)
         {
             Bullet bullet = Instantiate(_prefab, container);
+            
+            _updateController.PoolFixedUpdatable.Add(bullet.GetComponent<Bullet>());
 
             return bullet;
         }

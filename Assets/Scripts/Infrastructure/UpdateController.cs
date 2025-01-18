@@ -5,6 +5,7 @@ using Infrastructure.CommonInterfaces;
 using Infrastructure.DI;
 using Infrastructure.Listeners;
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure
 {
@@ -13,17 +14,23 @@ namespace Infrastructure
         [SerializeField] private float _duration = 3f;
         [SerializeField] private float _startOffset;
         
-        private IUpdatable[] _updatable;
-        private IFixedUpdatable[] _fixedUpdatable;
+        [Inject]
+        private IEnumerable<IUpdatable> _updatable;
+        
+        [Inject]
+        private IEnumerable<IFixedUpdatable> _fixedUpdatable;
 
         private GameStateMachine _gameStateMachine;
 
         [SerializeField] private bool _isNeedUpdate;
 
-        private void Start()
+        public UpdateController()
         {
-            _updatable = FindObjectsOfTypeInterface<IUpdatable>();
-            _fixedUpdatable = FindObjectsOfTypeInterface<IFixedUpdatable>();
+            PoolFixedUpdatable = new List<IFixedUpdatable>();
+        }
+
+        public List<IFixedUpdatable> PoolFixedUpdatable {
+            get;
         }
         
         private void Update()
@@ -42,9 +49,14 @@ namespace Infrastructure
             {
                 fixedUpdatable.CustomFixedUpdate();
             }
+
+            foreach (var item in PoolFixedUpdatable)
+            {
+                item.CustomFixedUpdate();
+            }
         }
 
-        private static T[] FindObjectsOfTypeInterface<T>() where T : class
+        /*private static T[] FindObjectsOfTypeInterface<T>() where T : class
         {
             var monoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
             var result = new List<T>();
@@ -57,7 +69,7 @@ namespace Infrastructure
                 }
             }
             return result.ToArray();
-        }
+        }*/
 
         public void PauseGame()
         {

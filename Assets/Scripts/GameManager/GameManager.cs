@@ -20,7 +20,7 @@ namespace GameManager
         [SerializeField] private CharacterController _characterController;
         
         [Inject]
-        [SerializeField] private InputManager _inputManager;
+        private InputManager _inputManager;
 
         private GameStateMachine _gameStateMachine;
 
@@ -67,7 +67,7 @@ namespace GameManager
 
         private void EnablePlayerInput(bool value)
         {
-            _inputManager.gameObject.SetActive(value);
+            _inputManager.IsActive = value;
         }
     }
 }
