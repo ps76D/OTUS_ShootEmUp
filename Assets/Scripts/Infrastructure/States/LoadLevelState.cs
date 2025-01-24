@@ -18,7 +18,7 @@ namespace Infrastructure
     
     public void Enter()
     {
-      _sceneLoader.Load(SceneNamesConsts.Common, OnLoaded, OnLoadStart);
+      _sceneLoader.LoadAdditive(SceneNamesConsts.Common, OnLoaded, OnLoadStart);
       
       Debug.Log("Enter LoadLevelState");
     }

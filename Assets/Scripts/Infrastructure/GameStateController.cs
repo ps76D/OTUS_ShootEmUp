@@ -12,15 +12,10 @@ namespace Infrastructure
         [Inject]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
-        [InjectIEnumerableLocal]
+        [Inject]
         private IEnumerable<IGameStateListener> _gameStateListenersLocal;
 
         private GameStateMachine _gameStateMachine;
-
-        private void Awake()
-        {
-            DontDestroyOnLoad(this);
-        }
         
         private void OnEnable()
         {

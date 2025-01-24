@@ -1,11 +1,17 @@
+using System.Collections.Generic;
+using System.Linq;
+using Infrastructure.Listeners;
 using UI.Infrastructure;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Infrastructure.DI
 {
     public class CommonSystemsInstaller : MonoInstaller
     {
+        private List<IGameStateListener> _gameStateListeners;
+        
         public override void InstallBindings()
         {
             GameBootstrapper gameBootstrapper = FindObjectOfType<GameBootstrapper>();
@@ -13,12 +19,6 @@ namespace Infrastructure.DI
 
             BindObjectAsSingleNonLazy(gameBootstrapper);
             BindObjectAsSingleNonLazy(uiManager);
-            
-            
-            /*Container.Bind<GameBootstrapper>().FromInstance(gameBootstrapper).AsSingle().NonLazy();
-            
-            Container.Bind<UIManager>().FromInstance(uiManager).AsSingle().NonLazy();*/
-
         }
 
         private void BindObjectAsSingleNonLazy<T>(T obj)

@@ -4,6 +4,7 @@ using GameManager;
 using UI;
 using UI.Infrastructure;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Infrastructure
 {
@@ -29,8 +30,10 @@ namespace Infrastructure
 
     public void Enter()
     {
-      _sceneLoader.ReLoad(SceneNamesConsts.MainMenu, OnLoaded, OnLoadStart);
-      
+      _sceneLoader.ReLoadAdditive(SceneNamesConsts.MainMenu, OnLoaded, OnLoadStart);
+
+      _sceneLoader.UnloadIfSceneLoaded(SceneNamesConsts.Game);
+
       OnMainMenuState?.Invoke();
       
       Debug.Log("Enter MainMenuState");

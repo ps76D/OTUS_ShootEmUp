@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bullets;
 using Components;
 using Enemy;
@@ -34,28 +35,28 @@ namespace Infrastructure.DI
         [SerializeField] private EnemyPool _enemyPool;
         [SerializeField] private GameObject _enemyPrefab;
         [SerializeField] private EnemyPositionsProvider _enemyPositionsProvider;
-
-        private InputManager _inputManager;
-        private LevelBackgroundMover _levelBackgroundMover;
-        private CharacterController _characterController;
+        
+        private IGameStateListener[] _gameStateListeners;
         
         public override void InstallBindings()
         {
-            _inputManager = new InputManager(_inputConfig);
-            _levelBackgroundMover = new LevelBackgroundMover(_backgroundConfig, _levelBounds);
-            _characterController = new CharacterController(_character);
+            Container.BindInterfacesAndSelfTo<InputManager>().FromNew().AsSingle().WithArguments(_inputConfig).NonLazy();
 
-            Container.Bind<InputManager>().FromInstance(_inputManager).AsCached().NonLazy();
             Container.Bind<UpdateController>().FromInstance(_updateController).AsCached().NonLazy();
-            
+
             Container.Bind<EnemyManager>().ToSelf().AsSingle().WithArguments(_enemyPool, _enemyPrefab, _worldTransform, _enemyPositionsProvider, _character.transform);
-            
+
             Container.Bind<BulletManager>().ToSelf().AsSingle().WithArguments(_bulletPrefab, _bulletPool, _worldTransform, _updateController);
 
-            BindObject(_characterController);
+            Container.Bind<CharacterController>().FromNew().AsSingle().WithArguments(_character).NonLazy();
+            
             BindObject(_levelBounds);
             
-            BindInterfaces();
+            Container.BindInterfacesAndSelfTo<LevelBackgroundMover>().FromNew().AsSingle().WithArguments(_backgroundConfig, _levelBounds).NonLazy();
+            Container.BindInterfacesAndSelfTo<IFixedUpdatable>().FromComponentsInHierarchy().AsCached().NonLazy();
+            
+            var gameStateListeners = FindObjectsOfType<MonoBehaviour>(true).OfType<IGameStateListener>().ToList();
+            Container.Bind<IEnumerable<IGameStateListener>>().FromInstance(gameStateListeners).AsCached().NonLazy();
         }
 
         private void BindObject<T>(T obj)
@@ -66,16 +67,6 @@ namespace Infrastructure.DI
                     .FromInstance(obj)
                     .AsSingle().NonLazy();
             }
-        }
-
-        private void BindInterfaces()
-        {
-            Container.Bind<IUpdatable>().FromInstance(_inputManager).AsCached().NonLazy();
-            Container.Bind<IFixedUpdatable>().FromInstance(_levelBackgroundMover).AsCached().NonLazy();
-            
-            Container.BindInterfacesAndSelfTo<IFixedUpdatable>().FromComponentsInHierarchy().AsTransient().NonLazy();
-            
-            Debug.Log("BindInterfaces Game Scene");
         }
     }
 }

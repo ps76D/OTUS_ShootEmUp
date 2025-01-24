@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Components;
-using GameManager.Listeners;
 using Infrastructure;
 using Infrastructure.DI;
 using Input;
@@ -17,7 +16,7 @@ namespace GameManager
         [SerializeField] private GameBootstrapper _gameBootstrapper;
         
         [Inject]
-        [SerializeField] private CharacterController _characterController;
+        private CharacterController _characterController;
         
         [Inject]
         private InputManager _inputManager;

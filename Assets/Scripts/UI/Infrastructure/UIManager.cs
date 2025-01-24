@@ -8,7 +8,7 @@ using Zenject;
 
 namespace UI.Infrastructure
 {
-    public sealed class UIManager : MonoBehaviour, IInGameListener, IResumeGameListener
+    public sealed class UIManager : MonoBehaviour
     {
         [Inject]
         [SerializeField] private GameBootstrapper _gameBootstrapper;
@@ -17,18 +17,12 @@ namespace UI.Infrastructure
         [SerializeField] private LoseScreen _loseScreen;
         [SerializeField] private PauseScreen _pauseScreen;
         [SerializeField] private HUDScreen _hud;
-        [SerializeField] private StartCountdownWidget _countdownWidget;
 
         private Action _mainMenuShowHandler;
         private Action _hudShowHandler;
         private Action _hudHideHandler;
         private Action _loseScreenShowHandler;
         private Action _pauseScreenShowHandler;
-
-        private void Awake()
-        {
-            DontDestroyOnLoad(this);
-        }
 
         private void Start()
         {
@@ -43,7 +37,7 @@ namespace UI.Infrastructure
             _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState += _hudHideHandler;
             _gameBootstrapper.Game.StateMachine.GetState<LoadInGameState>().OnLoadInGameState += _hudHideHandler;
             _gameBootstrapper.Game.StateMachine.GetState<LoadInGameState>().OnGameLoopSceneLoaded += _hudShowHandler;
-            
+
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState += _loseScreenShowHandler;
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState += _pauseScreenShowHandler;
         }
@@ -55,7 +49,7 @@ namespace UI.Infrastructure
             _gameBootstrapper.Game.StateMachine.GetState<MainMenuState>().OnMainMenuState -= _hudHideHandler;
             _gameBootstrapper.Game.StateMachine.GetState<LoadInGameState>().OnLoadInGameState -= _hudHideHandler;
             _gameBootstrapper.Game.StateMachine.GetState<LoadInGameState>().OnGameLoopSceneLoaded -= _hudShowHandler;
-            
+
             _gameBootstrapper.Game.StateMachine.GetState<LoseState>().OnLoseState -= _loseScreenShowHandler;
             _gameBootstrapper.Game.StateMachine.GetState<PauseState>().OnPauseState -= _pauseScreenShowHandler;
         }
@@ -69,16 +63,6 @@ namespace UI.Infrastructure
         {
             EventSystem.current.SetSelectedGameObject(null);
             screen.gameObject.SetActive(false);
-        }
-
-        public void InGame()
-        {
-            ShowScreen(_countdownWidget);
-        }
-
-        public void ResumeGame()
-        {
-            ShowScreen(_countdownWidget);
         }
     }
 }

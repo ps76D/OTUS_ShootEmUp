@@ -3,6 +3,7 @@ using GameManager;
 using UI;
 using UI.Infrastructure;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Infrastructure
 {
@@ -27,7 +28,11 @@ namespace Infrastructure
 
     public void Enter()
     {
-      _sceneLoader.ReLoad(SceneNamesConsts.Game, OnLoaded, OnLoadStart);
+      _sceneLoader.UnloadIfSceneLoaded(SceneNamesConsts.Game);
+      
+      _sceneLoader.ReLoadAdditive(SceneNamesConsts.Game, OnLoaded, OnLoadStart);
+      
+      _sceneLoader.UnloadIfSceneLoaded(SceneNamesConsts.MainMenu);
       
       OnLoadInGameState?.Invoke();
 

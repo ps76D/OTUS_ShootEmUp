@@ -55,22 +55,7 @@ namespace Infrastructure
                 item.CustomFixedUpdate();
             }
         }
-
-        /*private static T[] FindObjectsOfTypeInterface<T>() where T : class
-        {
-            var monoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
-            var result = new List<T>();
-
-            foreach (MonoBehaviour mono in monoBehaviours)
-            {
-                if (mono is T t)
-                {
-                    result.Add(t);
-                }
-            }
-            return result.ToArray();
-        }*/
-
+        
         public void PauseGame()
         {
             _isNeedUpdate = false;
